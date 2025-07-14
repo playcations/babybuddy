@@ -369,15 +369,30 @@ gulp.task("runserver", function (cb) {
 });
 
 gulp.task("generateschema", () => {
-  return _runInPipenv([
-    "python",
-    "manage.py",
-    "generateschema",
-    "--title",
-    "Baby Buddy API",
-    "--file",
-    "openapi-schema.yml",
-  ]);
+  return new Promise((resolve, reject) => {
+    const env = Object.assign({}, process.env, {
+      DJANGO_SETTINGS_MODULE: "babybuddy.settings.development",
+    });
+    spawn(
+      "pipenv",
+      [
+        "run",
+        "python",
+        "manage.py",
+        "generateschema",
+        "--title",
+        "Baby Buddy API",
+        "--file",
+        "openapi-schema.yml",
+      ],
+      { stdio: "inherit", env: env },
+    ).on("exit", function (code) {
+      if (code) {
+        reject();
+      }
+      resolve();
+    });
+  });
 });
 
 /**

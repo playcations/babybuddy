@@ -344,7 +344,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_FILTER_BACKENDS": [
-        "django_filters.rest_framework.DjangoFilterBackend",
+        "api.filter_backends.SchemaDjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
     ],
     "DEFAULT_METADATA_CLASS": "api.metadata.APIMetadata",

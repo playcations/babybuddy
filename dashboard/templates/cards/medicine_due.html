@@ -1,0 +1,50 @@
+{% extends 'cards/base.html' %}
+{% load duration i18n %}
+{% block header %}
+    <a href="{% url "core:medicine-list" %}">{% trans "Medicine Due" %}</a>
+{% endblock %}
+{% block title %}
+    {% if medicines %}
+        {% blocktrans count counter=medicines|length %}
+            {{ counter }} medicine due
+        {% plural %}
+            {{ counter }} medicines due
+        {% endblocktrans %}
+    {% else %}
+        {% trans "No medicines due" %}
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if medicines %}
+        {% for medicine in medicines %}
+            <div class="mb-2{% if not forloop.last %} border-bottom pb-2{% endif %}">
+                <div>
+                    <strong>{{ medicine.medicine_name }}</strong>
+                    <span class="text-muted">{{ medicine.dosage }} {{ medicine.get_dosage_unit_display }}</span>
+                </div>
+                <div>
+                    {% if medicine.next_dose_time <= now %}
+                        <span class="badge badge-danger">{% trans "Overdue" %}</span>
+                    {% else %}
+                        <small class="text-warning">
+                            {% blocktrans trimmed with time_until=medicine.next_dose_time|deltasince|duration_string:'m' %}
+                                Due {{ time_until }} ago
+                            {% endblocktrans %}
+                        </small>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="mt-2">
+            <a href="{% url 'core:medicine-add' %}" class="btn btn-sm btn-primary">
+                <i class="icon-add" aria-hidden="true"></i> {% trans "Add Medicine" %}
+            </a>
+        </div>
+    {% else %}
+        <div class="mt-2">
+            <a href="{% url 'core:medicine-add' %}" class="btn btn-sm btn-primary">
+                <i class="icon-add" aria-hidden="true"></i> {% trans "Add Medicine" %}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

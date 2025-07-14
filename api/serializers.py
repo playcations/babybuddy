@@ -194,6 +194,26 @@ class HeightSerializer(CoreModelSerializer, TaggableSerializer):
         fields = ("id", "child", "height", "date", "notes", "tags")
 
 
+class MedicineSerializer(CoreModelSerializer, TaggableSerializer):
+    class Meta:
+        model = models.Medicine
+        fields = (
+            "id",
+            "child",
+            "medicine_name",
+            "dosage",
+            "dosage_unit",
+            "time",
+            "next_dose_interval",
+            "next_dose_time",
+            "notes",
+            "tags",
+        )
+        extra_kwargs = {
+            "next_dose_time": {"read_only": True},
+        }
+
+
 class NoteSerializer(CoreModelSerializer, TaggableSerializer):
     class Meta:
         model = models.Note

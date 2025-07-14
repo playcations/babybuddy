@@ -906,3 +906,154 @@ class WeightFormsTestCase(FormsTestCaseBase):
         page = self.c.post("/weight/{}/delete/".format(self.weight.id), follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Weight entry deleted")
+
+
+class MedicineFormsTestCase(FormsTestCaseBase):
+    @classmethod
+    def setUpClass(cls):
+        super(MedicineFormsTestCase, cls).setUpClass()
+        cls.medicine = models.Medicine.objects.create(
+            child=cls.child,
+            medicine_name="Tylenol",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=timezone.localtime() - timezone.timedelta(hours=2),
+            next_dose_interval=timezone.timedelta(hours=4),
+            notes="Test medicine",
+        )
+
+    def test_add(self):
+        params = {
+            "child": self.child.id,
+            "medicine_name": "Ibuprofen",
+            "dosage": "2.5",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(),
+            "next_dose_interval": "04:00:00",
+            "notes": "New medicine entry",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_add_without_interval(self):
+        params = {
+            "child": self.child.id,
+            "medicine_name": "Vitamin D",
+            "dosage": "1",
+            "dosage_unit": "drops",
+            "time": self.localtime_string(),
+            "notes": "Daily vitamin",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_add_with_tags(self):
+        params = {
+            "child": self.child.id,
+            "medicine_name": "Acetaminophen",
+            "dosage": "3.0",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(),
+            "next_dose_interval": "06:00:00",
+            "tags": "fever,pain",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_edit(self):
+        params = {
+            "child": self.medicine.child.id,
+            "medicine_name": self.medicine.medicine_name,
+            "dosage": self.medicine.dosage + 1.0,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "next_dose_interval": "08:00:00",
+            "notes": "Updated medicine entry",
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertEqual(self.medicine.dosage, params["dosage"])
+        self.assertEqual(self.medicine.notes, params["notes"])
+        self.assertContains(
+            page, "Medicine entry for {} updated".format(str(self.medicine.child))
+        )
+
+    def test_edit_change_interval(self):
+        original_next_dose = self.medicine.next_dose_time
+        params = {
+            "child": self.medicine.child.id,
+            "medicine_name": self.medicine.medicine_name,
+            "dosage": self.medicine.dosage,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "next_dose_interval": "12:00:00",
+            "notes": self.medicine.notes,
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertNotEqual(self.medicine.next_dose_time, original_next_dose)
+        expected_next_dose = self.medicine.time + timezone.timedelta(hours=12)
+        self.assertEqual(self.medicine.next_dose_time, expected_next_dose)
+
+    def test_edit_remove_interval(self):
+        params = {
+            "child": self.medicine.child.id,
+            "medicine_name": self.medicine.medicine_name,
+            "dosage": self.medicine.dosage,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "notes": self.medicine.notes,
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertIsNone(self.medicine.next_dose_time)
+        self.assertIsNone(self.medicine.next_dose_interval)
+
+    def test_delete(self):
+        page = self.c.post("/medicine/{}/delete/".format(self.medicine.id), follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry deleted")
+
+    def test_form_validation_positive_dosage(self):
+        params = {
+            "child": self.child.id,
+            "medicine_name": "Test Medicine",
+            "dosage": "-1.0",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(),
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertFormError(page.context["form"], None, "Dosage must be positive")
+
+    def test_form_validation_future_time(self):
+        future_time = timezone.localtime() + timezone.timedelta(hours=1)
+        params = {
+            "child": self.child.id,
+            "medicine_name": "Test Medicine",
+            "dosage": "5.0",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(future_time),
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertFormError(
+            page.context["form"], "time", "Date/time can not be in the future."
+        )

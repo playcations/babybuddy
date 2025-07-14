@@ -77,6 +77,14 @@ class HeightViewSet(viewsets.ModelViewSet):
     ordering = "-date"
 
 
+class MedicineViewSet(viewsets.ModelViewSet):
+    queryset = models.Medicine.objects.all()
+    serializer_class = serializers.MedicineSerializer
+    filterset_class = filters.MedicineFilter
+    ordering_fields = ("time", "medicine_name", "dosage")
+    ordering = "-time"
+
+
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = models.Note.objects.all()
     serializer_class = serializers.NoteSerializer

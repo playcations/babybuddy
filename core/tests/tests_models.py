@@ -398,3 +398,228 @@ class WeightTestCase(TestCase):
         self.assertEqual(self.weight, models.Weight.objects.first())
         self.assertEqual(str(self.weight), "Weight")
         self.assertEqual(self.weight.weight, 23)
+
+
+class MedicineTestCase(TestCase):
+    def setUp(self):
+        call_command("migrate", verbosity=0)
+        self.child = models.Child.objects.create(
+            first_name="First", last_name="Last", birth_date=timezone.localdate()
+        )
+        self.medicine = models.Medicine.objects.create(
+            child=self.child,
+            medicine_name="Tylenol",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=timezone.localtime() - timezone.timedelta(hours=1),
+            next_dose_interval=timezone.timedelta(hours=4),
+        )
+
+    def test_medicine_create(self):
+        self.assertEqual(self.medicine, models.Medicine.objects.first())
+        self.assertEqual(str(self.medicine), "Medicine")
+        self.assertEqual(self.medicine.medicine_name, "Tylenol")
+        self.assertEqual(self.medicine.dosage, 5.0)
+        self.assertEqual(self.medicine.dosage_unit, "ml")
+
+    def test_next_dose_time_calculation(self):
+        expected_next_dose = self.medicine.time + self.medicine.next_dose_interval
+        self.assertEqual(self.medicine.next_dose_time, expected_next_dose)
+
+    def test_next_dose_ready_property(self):
+        # Medicine given 1 hour ago with 4-hour interval should not be ready
+        self.assertFalse(self.medicine.next_dose_ready)
+
+        # Medicine given 5 hours ago with 4-hour interval should be ready
+        old_medicine = models.Medicine.objects.create(
+            child=self.child,
+            medicine_name="Old Medicine",
+            dosage=2.5,
+            dosage_unit="mg",
+            time=timezone.localtime() - timezone.timedelta(hours=5),
+            next_dose_interval=timezone.timedelta(hours=4),
+        )
+        self.assertTrue(old_medicine.next_dose_ready)
+
+    def test_next_dose_ready_no_interval(self):
+        # Medicine with no interval should always be ready
+        no_interval_medicine = models.Medicine.objects.create(
+            child=self.child,
+            medicine_name="No Interval Medicine",
+            dosage=1.0,
+            dosage_unit="tablets",
+            time=timezone.localtime(),
+        )
+        self.assertTrue(no_interval_medicine.next_dose_ready)
+
+    def test_medicine_validation_positive_dosage(self):
+        from django.core.exceptions import ValidationError
+
+        medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Test Medicine",
+            dosage=-1.0,
+            dosage_unit="mg",
+            time=timezone.localtime(),
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+    def test_medicine_validation_positive_interval(self):
+        from django.core.exceptions import ValidationError
+
+        medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Test Medicine",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=timezone.localtime(),
+            next_dose_interval=timezone.timedelta(seconds=-1),
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+    def test_medicine_save_updates_next_dose_time(self):
+        # Test that saving updates next_dose_time when interval changes
+        original_next_dose = self.medicine.next_dose_time
+        self.medicine.next_dose_interval = timezone.timedelta(hours=6)
+        self.medicine.save()
+
+        expected_new_next_dose = self.medicine.time + timezone.timedelta(hours=6)
+        self.assertEqual(self.medicine.next_dose_time, expected_new_next_dose)
+        self.assertNotEqual(self.medicine.next_dose_time, original_next_dose)
+
+    def test_medicine_save_clears_next_dose_time(self):
+        # Test that removing interval clears next_dose_time
+        self.assertIsNotNone(self.medicine.next_dose_time)
+        self.medicine.next_dose_interval = None
+        self.medicine.save()
+        self.assertIsNone(self.medicine.next_dose_time)
+
+    def test_medicine_with_tags(self):
+        self.medicine.tags.add("fever", "morning")
+        self.assertEqual(self.medicine.tags.count(), 2)
+        self.assertTrue(self.medicine.tags.filter(name="fever").exists())
+
+    def test_medicine_validation_future_time(self):
+        from django.core.exceptions import ValidationError
+
+        future_time = timezone.localtime() + timezone.timedelta(hours=1)
+        medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Future Medicine",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=future_time,
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+    def test_medicine_validation_tablet_whole_number(self):
+        from django.core.exceptions import ValidationError
+
+        # Test that tablet dosage must be whole number
+        medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Tablet Medicine",
+            dosage=2.5,  # Half tablet should fail
+            dosage_unit="tablets",
+            time=timezone.localtime(),
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+        # Test that whole number tablets work
+        medicine.dosage = 2.0
+        try:
+            medicine.full_clean()
+        except ValidationError:
+            self.fail("Whole number tablet dosage should be valid")
+
+    def test_medicine_validation_dosage_limits(self):
+        from django.core.exceptions import ValidationError
+
+        # Test dosage too high for ml
+        medicine = models.Medicine(
+            child=self.child,
+            medicine_name="High Dose Medicine",
+            dosage=1000.0,  # 1000ml is too high
+            dosage_unit="ml",
+            time=timezone.localtime(),
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+        # Test dosage too low for mg
+        medicine.dosage_unit = "mg"
+        medicine.dosage = 0.01  # 0.01mg is too low
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()
+
+        # Test valid dosage
+        medicine.dosage = 100.0  # 100mg is valid
+        try:
+            medicine.full_clean()
+        except ValidationError:
+            self.fail("Valid dosage should not raise ValidationError")
+
+    def test_medicine_validation_duplicate_prevention(self):
+        from django.core.exceptions import ValidationError
+
+        # Create a duplicate medicine within 5 minutes
+        duplicate_time = self.medicine.time + timezone.timedelta(minutes=2)
+        duplicate_medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Tylenol",  # Same as existing
+            dosage=5.0,  # Same as existing
+            dosage_unit="ml",  # Same as existing
+            time=duplicate_time,  # Within 5 minutes
+        )
+
+        with self.assertRaises(ValidationError):
+            duplicate_medicine.full_clean()
+
+        # Test that medicine outside 5-minute window is allowed
+        later_time = self.medicine.time + timezone.timedelta(minutes=10)
+        later_medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Tylenol",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=later_time,
+        )
+
+        try:
+            later_medicine.full_clean()
+        except ValidationError:
+            self.fail("Medicine outside duplicate window should be valid")
+
+        # Test that different medicine name is allowed
+        different_medicine = models.Medicine(
+            child=self.child,
+            medicine_name="Advil",  # Different name
+            dosage=5.0,
+            dosage_unit="ml",
+            time=duplicate_time,
+        )
+
+        try:
+            different_medicine.full_clean()
+        except ValidationError:
+            self.fail("Different medicine should be valid")
+
+    def test_medicine_validation_case_insensitive_duplicates(self):
+        from django.core.exceptions import ValidationError
+
+        # Test case-insensitive duplicate detection
+        duplicate_time = self.medicine.time + timezone.timedelta(minutes=2)
+        duplicate_medicine = models.Medicine(
+            child=self.child,
+            medicine_name="TYLENOL",  # Different case
+            dosage=5.0,
+            dosage_unit="ml",
+            time=duplicate_time,
+        )
+
+        with self.assertRaises(ValidationError):
+            duplicate_medicine.full_clean()

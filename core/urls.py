@@ -103,6 +103,33 @@ urlpatterns = [
     path("height/add/", views.HeightAdd.as_view(), name="height-add"),
     path("height/<int:pk>/", views.HeightUpdate.as_view(), name="height-update"),
     path("height/<int:pk>/delete/", views.HeightDelete.as_view(), name="height-delete"),
+    path("medicine/", views.MedicineList.as_view(), name="medicine-list"),
+    path("medicine/add/", views.MedicineAdd.as_view(), name="medicine-add"),
+    path(
+        "medicine/add/bulk/", views.MedicineBulkAdd.as_view(), name="medicine-bulk-add"
+    ),
+    path(
+        "medicine/add/repeat/",
+        views.MedicineRepeatLast.as_view(),
+        name="medicine-repeat-last",
+    ),
+    path("medicine/<int:pk>/", views.MedicineUpdate.as_view(), name="medicine-update"),
+    path(
+        "medicine/<int:pk>/delete/",
+        views.MedicineDelete.as_view(),
+        name="medicine-delete",
+    ),
+    # AJAX endpoints for medicine safety window system
+    path(
+        "medicine/<int:pk>/repeat-dose/",
+        views.MedicineRepeatDose.as_view(),
+        name="medicine-repeat-dose",
+    ),
+    path(
+        "medicine/<int:pk>/remove-active/",
+        views.MedicineRemoveActive.as_view(),
+        name="medicine-remove-active",
+    ),
     path(
         "head-circumference/",
         views.HeadCircumferenceList.as_view(),

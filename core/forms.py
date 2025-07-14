@@ -10,7 +10,12 @@ from taggit.forms import TagField
 from babybuddy.widgets import DateInput, DateTimeInput, TimeInput
 from core import models
 from core.models import Timer
-from core.widgets import TagsEditor, ChildRadioSelect, PillRadioSelect
+from core.widgets import (
+    TagsEditor,
+    ChildRadioSelect,
+    PillRadioSelect,
+    DoseIntervalWidget,
+)
 
 
 def set_initial_values(kwargs, form_type):
@@ -302,6 +307,66 @@ class HeightForm(CoreModelForm, TaggableModelForm):
             "date": DateInput(),
             "notes": forms.Textarea(attrs={"rows": 5}),
         }
+
+
+class MedicineForm(CoreModelForm, TaggableModelForm):
+    fieldsets = [
+        {
+            "fields": ["child", "time", "medicine_name", "dosage", "dosage_unit"],
+            "layout": "required",
+        },
+        {
+            "fields": ["is_recurring"],
+            "layout": "medication_type",
+        },
+        {
+            "fields": ["next_dose_interval"],
+            "layout": "interval_section",
+        },
+        {"fields": ["notes", "tags"], "layout": "advanced"},
+    ]
+
+    class Meta:
+        model = models.Medicine
+        fields = [
+            "child",
+            "medicine_name",
+            "dosage",
+            "dosage_unit",
+            "time",
+            "is_recurring",
+            "next_dose_interval",
+            "notes",
+            "tags",
+        ]
+        widgets = {
+            "child": ChildRadioSelect,
+            "dosage_unit": PillRadioSelect(),
+            "time": DateTimeInput(),
+            "next_dose_interval": DoseIntervalWidget(),
+            "notes": forms.Textarea(attrs={"rows": 5}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set default interval to 12 hours for new medicines
+        if not self.instance.pk and not self.initial.get("next_dose_interval"):
+            from datetime import timedelta
+
+            self.initial["next_dose_interval"] = timedelta(hours=12)
+
+        # Update field labels and help text based on context
+        self.fields["is_recurring"].label = "Recurring Medication"
+        self.fields["is_recurring"].help_text = (
+            "Check if this medication is given on a schedule (leave unchecked for as-needed relief medications)"
+        )
+
+        # Set up dynamic label for interval field - will be updated by JavaScript
+        self.fields["next_dose_interval"].label = "Safety Window"
+        self.fields["next_dose_interval"].help_text = (
+            "Minimum time between doses for safety"
+        )
 
 
 class PumpingForm(CoreModelForm, TaggableModelForm):

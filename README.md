@@ -1,4 +1,4 @@
-This is for my own personal modifications. Use them as you see fit. 
+This is for my own personal modifications. Use them as you see fit.
 
 <img src="babybuddy/static_src/logo/icon.png" height="150" align="left">
 

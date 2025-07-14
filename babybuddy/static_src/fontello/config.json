@@ -281,6 +281,12 @@
       "css": "angle-double-right",
       "code": 61697,
       "src": "fontawesome"
+    },
+    {
+      "uid": "d4816c0845aa43767213d45574b3b145",
+      "css": "medicine",
+      "code": 62218,
+      "src": "fontawesome"
     }
   ]
 }

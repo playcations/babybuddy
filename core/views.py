@@ -5,6 +5,8 @@ from django.db.models import Count
 from django.db.models.functions import Lower
 from django.forms import Form
 from django.http import HttpResponseRedirect
+from django.views import View
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -269,6 +271,189 @@ class HeightDelete(CoreDeleteView):
     model = models.Height
     permission_required = ("core.delete_height",)
     success_url = reverse_lazy("core:height-list")
+
+
+class MedicineList(
+    PermissionRequiredMixin, BabyBuddyPaginatedView, BabyBuddyFilterView
+):
+    model = models.Medicine
+    template_name = "core/medicine_list.html"
+    permission_required = ("core.view_medicine",)
+    filterset_class = filters.MedicineFilter
+
+
+class MedicineAdd(CoreAddView):
+    model = models.Medicine
+    permission_required = ("core.add_medicine",)
+    form_class = forms.MedicineForm
+    success_url = reverse_lazy("core:medicine-list")
+
+
+class MedicineRepeatLast(CoreAddView):
+    model = models.Medicine
+    permission_required = ("core.add_medicine",)
+    form_class = forms.MedicineForm
+    success_url = reverse_lazy("core:medicine-list")
+    template_name = "core/medicine_form.html"
+
+    def get_initial(self):
+        """Pre-populate form with last medicine data for the selected child."""
+        initial = super().get_initial()
+        child_id = self.request.GET.get("child")
+
+        if child_id:
+            try:
+                child = models.Child.objects.get(id=child_id)
+                last_medicine = (
+                    models.Medicine.objects.filter(child=child)
+                    .order_by("-time")
+                    .first()
+                )
+
+                if last_medicine:
+                    initial["child"] = child
+                    initial["medicine_name"] = last_medicine.medicine_name
+                    initial["dosage"] = last_medicine.dosage
+                    initial["dosage_unit"] = last_medicine.dosage_unit
+                    initial["next_dose_interval"] = last_medicine.next_dose_interval
+                    initial["notes"] = last_medicine.notes
+                    # Set time to now for the new entry
+                    initial["time"] = timezone.localtime()
+
+                    # Copy tags
+                    if hasattr(last_medicine, "tags") and last_medicine.tags.exists():
+                        initial["tags"] = ",".join(
+                            [tag.name for tag in last_medicine.tags.all()]
+                        )
+            except (models.Child.DoesNotExist, ValueError):
+                pass
+
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["repeat_mode"] = True
+        return context
+
+
+class MedicineBulkAdd(CoreAddView):
+    model = models.Medicine
+    permission_required = ("core.add_medicine",)
+    form_class = forms.MedicineForm
+    success_url = reverse_lazy("core:medicine-list")
+    template_name = "core/medicine_bulk_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["bulk_mode"] = True
+        return context
+
+    def form_valid(self, form):
+        """Handle bulk creation of medicine entries."""
+        response = super().form_valid(form)
+
+        # Add a success message for bulk operations
+        from django.contrib import messages
+
+        messages.success(
+            self.request,
+            _(
+                "Medicine entry added successfully. You can quickly add another entry below."
+            ),
+        )
+
+        # Redirect back to the bulk form with the same initial data
+        child_id = (
+            form.cleaned_data["child"].id if form.cleaned_data.get("child") else None
+        )
+        if child_id:
+            return redirect(f"{self.request.path}?child={child_id}")
+
+        return response
+
+
+class MedicineUpdate(CoreUpdateView):
+    model = models.Medicine
+    permission_required = ("core.change_medicine",)
+    form_class = forms.MedicineForm
+    success_url = reverse_lazy("core:medicine-list")
+
+
+class MedicineDelete(CoreDeleteView):
+    model = models.Medicine
+    permission_required = ("core.delete_medicine",)
+    success_url = reverse_lazy("core:medicine-list")
+
+
+class MedicineRepeatDose(PermissionRequiredMixin, View):
+    """AJAX endpoint to repeat a medicine dose"""
+
+    permission_required = ("core.add_medicine",)
+
+    def post(self, request, pk):
+        from django.http import JsonResponse
+        from django.utils import timezone
+
+        try:
+            # Get the original medicine
+            original = models.Medicine.objects.get(pk=pk)
+
+            # Create a new medicine entry with current time
+            new_medicine = models.Medicine(
+                child=original.child,
+                medicine_name=original.medicine_name,
+                dosage=original.dosage,
+                dosage_unit=original.dosage_unit,
+                time=timezone.now(),
+                next_dose_interval=original.next_dose_interval,
+                is_recurring=original.is_recurring,
+                last_given_time=timezone.now(),
+                is_active=True,
+                notes=f"Repeated dose of {original.medicine_name}",
+            )
+            new_medicine.save()
+
+            # Update the original medicine's last_given_time if it's as-needed
+            if not original.is_recurring:
+                original.last_given_time = timezone.now()
+                original.save(update_fields=["last_given_time"])
+
+            return JsonResponse(
+                {"status": "success", "message": "Dose repeated successfully"}
+            )
+
+        except models.Medicine.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Medicine not found"}, status=404
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+
+class MedicineRemoveActive(PermissionRequiredMixin, View):
+    """AJAX endpoint to remove a medicine from active tracking"""
+
+    permission_required = ("core.change_medicine",)
+
+    def post(self, request, pk):
+        from django.http import JsonResponse
+
+        try:
+            # Get the medicine and mark as inactive
+            medicine = models.Medicine.objects.get(pk=pk)
+            medicine.is_active = False
+            medicine.save(update_fields=["is_active"])
+
+            return JsonResponse(
+                {"status": "success", "message": "Medicine removed from active list"}
+            )
+
+        except models.Medicine.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Medicine not found"}, status=404
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
 class NoteList(PermissionRequiredMixin, BabyBuddyPaginatedView, BabyBuddyFilterView):

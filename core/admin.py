@@ -170,6 +170,30 @@ class HeightAdmin(ImportExportMixin, ExportActionMixin, admin.ModelAdmin):
     resource_class = HeightImportExportResource
 
 
+class MedicineImportExportResource(ImportExportResourceBase):
+    class Meta:
+        model = models.Medicine
+
+
+@admin.register(models.Medicine)
+class MedicineAdmin(ImportExportMixin, ExportActionMixin, admin.ModelAdmin):
+    list_display = (
+        "time",
+        "child",
+        "medicine_name",
+        "dosage",
+        "dosage_unit",
+        "next_dose_time",
+    )
+    list_filter = ("child", "dosage_unit", "tags")
+    search_fields = (
+        "child__first_name",
+        "child__last_name",
+        "medicine_name",
+    )
+    resource_class = MedicineImportExportResource
+
+
 class NoteImportExportResource(ImportExportResourceBase):
     class Meta:
         model = models.Note

@@ -2,4 +2,4 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      run: gulp lint
+      run: npx gulp lint

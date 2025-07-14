@@ -744,6 +744,244 @@ class Weight(models.Model):
         validate_date(self.date, "date")
 
 
+class Medicine(models.Model):
+    model_name = "medicine"
+
+    DOSAGE_UNIT_CHOICES = [
+        ("mg", _("MG")),
+        ("ml", _("ML")),
+        ("tablets", _("Tablets")),
+        ("drops", _("Drops")),
+        ("tsp", _("Teaspoons")),
+        ("tbsp", _("Tablespoons")),
+    ]
+
+    child = models.ForeignKey(
+        "Child",
+        on_delete=models.CASCADE,
+        related_name="medicine",
+        verbose_name=_("Child"),
+        blank=False,
+        null=False,
+    )
+    medicine_name = models.CharField(
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name=_("Medicine Name"),
+        help_text=_("Name of the medication administered"),
+        db_index=True,
+    )
+    dosage = models.FloatField(
+        blank=False,
+        null=False,
+        verbose_name=_("Dosage"),
+        help_text=_("Amount of medication given"),
+    )
+    dosage_unit = models.CharField(
+        max_length=20,
+        choices=DOSAGE_UNIT_CHOICES,
+        blank=False,
+        null=False,
+        verbose_name=_("Dosage Unit"),
+    )
+    time = models.DateTimeField(
+        blank=False,
+        default=timezone.localtime,
+        null=False,
+        verbose_name=_("Time"),
+        db_index=True,
+    )
+    next_dose_interval = models.DurationField(
+        blank=True,
+        null=True,
+        verbose_name=_("Next Dose Interval"),
+        help_text=_("Time until next dose can be given"),
+    )
+    next_dose_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        editable=False,
+        verbose_name=_("Next Dose Time"),
+        help_text=_("Calculated time when next dose is allowed"),
+    )
+    # New fields for safety window system
+    is_recurring = models.BooleanField(
+        default=False,
+        verbose_name=_("Recurring Medication"),
+        help_text=_(
+            "Check if this medication is given on a schedule (vs as-needed for relief)"
+        ),
+    )
+    last_given_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Last Given Time"),
+        help_text=_("When this medication was last administered"),
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("Whether this medication is still being tracked"),
+    )
+    notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
+    tags = TaggableManager(blank=True, through=Tagged)
+
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["-time"]
+        verbose_name = _("Medicine")
+        verbose_name_plural = _("Medicines")
+        default_permissions = ("view", "add", "change", "delete")
+        indexes = [
+            # Composite index for child + time queries (most common pattern)
+            models.Index(fields=["child", "-time"], name="medicine_child_time_idx"),
+            # Index for next dose time queries (dashboard card filtering)
+            models.Index(fields=["next_dose_time"], name="medicine_next_dose_time_idx"),
+            # Composite index for duplicate detection queries
+            models.Index(
+                fields=["child", "medicine_name", "time"],
+                name="medicine_duplicate_check_idx",
+            ),
+            # Index for active medicine filtering (dashboard cards)
+            models.Index(
+                fields=["is_active", "child", "-last_given_time"],
+                name="medicine_active_status_idx",
+            ),
+            # Index for last given time queries
+            models.Index(fields=["last_given_time"], name="medicine_last_given_idx"),
+        ]
+
+    def clean(self):
+        validate_time(self.time, "time")
+
+        # Enhanced timezone handling - ensure time is not in the future
+        if self.time and self.time > timezone.now():
+            raise ValidationError(_("Medicine time cannot be in the future"))
+
+        if self.dosage <= 0:
+            raise ValidationError(_("Dosage must be positive"))
+        if self.next_dose_interval and self.next_dose_interval.total_seconds() <= 0:
+            raise ValidationError(_("Next dose interval must be positive"))
+
+        # Dosage unit validation
+        if self.dosage_unit == "tablets" and self.dosage != int(self.dosage):
+            raise ValidationError(_("Tablet dosage must be a whole number"))
+
+        # Set reasonable limits for different units
+        dosage_limits = {
+            "mg": (0.1, 10000),  # 0.1mg to 10g
+            "ml": (0.1, 500),  # 0.1ml to 500ml
+            "tablets": (0.5, 50),  # 0.5 to 50 tablets
+            "drops": (1, 100),  # 1 to 100 drops
+            "tsp": (0.1, 20),  # 0.1 to 20 teaspoons
+            "tbsp": (0.1, 10),  # 0.1 to 10 tablespoons
+        }
+
+        if self.dosage_unit in dosage_limits:
+            min_dose, max_dose = dosage_limits[self.dosage_unit]
+            if not (min_dose <= self.dosage <= max_dose):
+                raise ValidationError(
+                    _("Dosage for %(unit)s must be between %(min)s and %(max)s")
+                    % {
+                        "unit": self.get_dosage_unit_display(),
+                        "min": min_dose,
+                        "max": max_dose,
+                    }
+                )
+
+        # Duplicate prevention logic
+        if self.pk is None:  # Only check for new instances
+            from datetime import timedelta
+
+            # Check for duplicates within 5 minutes
+            duplicate_window = timedelta(minutes=5)
+            time_start = self.time - duplicate_window
+            time_end = self.time + duplicate_window
+
+            duplicates = Medicine.objects.filter(
+                child=self.child,
+                medicine_name__iexact=self.medicine_name,
+                dosage=self.dosage,
+                dosage_unit=self.dosage_unit,
+                time__range=(time_start, time_end),
+            )
+
+            if duplicates.exists():
+                raise ValidationError(
+                    _(
+                        "A similar medicine entry already exists within 5 minutes of this time. "
+                        "Please check for duplicate entries."
+                    )
+                )
+
+    def save(self, *args, **kwargs):
+        if self.next_dose_interval:
+            self.next_dose_time = self.time + self.next_dose_interval
+        else:
+            self.next_dose_time = None
+        super().save(*args, **kwargs)
+
+    @property
+    def next_dose_ready(self):
+        if not self.next_dose_time:
+            return True
+        return timezone.now() >= self.next_dose_time
+
+    @property
+    def is_safe_to_give(self):
+        """Check if enough time has passed since last dose for as-needed medications"""
+        if self.is_recurring:
+            return self.next_dose_ready  # Use existing logic for recurring
+
+        if not self.last_given_time or not self.next_dose_interval:
+            return True  # Safe if never given or no safety window set
+
+        safe_time = self.last_given_time + self.next_dose_interval
+        return timezone.now() >= safe_time
+
+    @property
+    def time_until_safe(self):
+        """Returns timedelta until medication is safe to give again"""
+        if self.is_recurring:
+            if not self.next_dose_time:
+                return None
+            remaining = self.next_dose_time - timezone.now()
+            return remaining if remaining.total_seconds() > 0 else None
+
+        if not self.last_given_time or not self.next_dose_interval:
+            return None  # Safe to give
+
+        safe_time = self.last_given_time + self.next_dose_interval
+        remaining = safe_time - timezone.now()
+        return remaining if remaining.total_seconds() > 0 else None
+
+    @property
+    def last_dose_status(self):
+        """Returns human-readable status of when medication can be given"""
+        if self.is_safe_to_give:
+            return _("Safe to give")
+
+        time_left = self.time_until_safe
+        if not time_left:
+            return _("Safe to give")
+
+        hours = int(time_left.total_seconds() // 3600)
+        minutes = int((time_left.total_seconds() % 3600) // 60)
+
+        if hours > 0:
+            return _("Wait %(hours)dh %(minutes)dm") % {
+                "hours": hours,
+                "minutes": minutes,
+            }
+        else:
+            return _("Wait %(minutes)dm") % {"minutes": minutes}
+
+    def __str__(self):
+        return str(_("Medicine"))
+
+
 class WeightPercentile(models.Model):
     model_name = "weight percentile"
     age_in_days = models.DurationField(null=False)

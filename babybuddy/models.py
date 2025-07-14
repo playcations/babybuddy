@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import zoneinfo
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -128,6 +129,46 @@ class Settings(models.Model):
         ],
         default=25,
         verbose_name=_("Items Per Page"),
+    )
+    medicine_card_hide_threshold = models.DurationField(
+        verbose_name=_("Hide medicine card after"),
+        help_text=_(
+            'This setting controls when the "Last Medicine" dashboard card will be hidden after the last medicine entry.'
+        ),
+        blank=True,
+        null=True,
+        default=timedelta(hours=24),
+        choices=[
+            (None, _("never hide")),
+            (
+                timedelta(hours=1),
+                ngettext_lazy("%(hours)d hour", "%(hours)d hours", 1) % {"hours": 1},
+            ),
+            (
+                timedelta(hours=6),
+                ngettext_lazy("%(hours)d hour", "%(hours)d hours", 6) % {"hours": 6},
+            ),
+            (
+                timedelta(hours=12),
+                ngettext_lazy("%(hours)d hour", "%(hours)d hours", 12) % {"hours": 12},
+            ),
+            (
+                timedelta(hours=24),
+                ngettext_lazy("%(hours)d hour", "%(hours)d hours", 24) % {"hours": 24},
+            ),
+            (
+                timedelta(days=2),
+                ngettext_lazy("%(days)d day", "%(days)d days", 2) % {"days": 2},
+            ),
+            (
+                timedelta(days=3),
+                ngettext_lazy("%(days)d day", "%(days)d days", 3) % {"days": 3},
+            ),
+            (
+                timedelta(weeks=1),
+                ngettext_lazy("%(weeks)d week", "%(weeks)d weeks", 1) % {"weeks": 1},
+            ),
+        ],
     )
 
     def __str__(self):

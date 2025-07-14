@@ -1,0 +1,38 @@
+{% extends 'babybuddy/page.html' %}
+{% load i18n %}
+{% block title %}
+    {% if object %}
+        {{ object }}
+    {% elif repeat_mode %}
+        {% trans "Repeat Last Medicine" %}
+    {% else %}
+        {% trans "Add a Medicine Entry" %}
+    {% endif %}
+{% endblock %}
+{% block breadcrumbs %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'core:medicine-list' %}">{% trans "Medicine" %}</a>
+    </li>
+    {% if object %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Update" %}</li>
+    {% elif repeat_mode %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Repeat Last Medicine" %}</li>
+    {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Add a Medicine Entry" %}</li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if object %}
+        <h1>
+            {% trans "Update" %} <span class="text-info">{{ object }}</span>
+        </h1>
+    {% elif repeat_mode %}
+        <h1>{% trans "Repeat Last Medicine" %}</h1>
+        <div class="alert alert-info">
+            {% trans "Form has been pre-filled with the last medicine data. Please verify and adjust as needed." %}
+        </div>
+    {% else %}
+        <h1>{% trans "Add a Medicine Entry" %}</h1>
+    {% endif %}
+    {% include 'babybuddy/form.html' %}
+{% endblock %}

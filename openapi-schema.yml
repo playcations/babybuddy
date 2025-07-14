@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: ""
+  title: Baby Buddy API
   version: ""
 paths:
   /api/bmi/:
@@ -23,13 +23,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -106,13 +106,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -143,13 +143,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -191,13 +191,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -239,13 +239,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -279,60 +279,55 @@ paths:
         - name: amount
           required: false
           in: query
-          description: amount
+          description: Filter by amount
           schema:
             type: string
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: color
           required: false
           in: query
-          description: color
+          description: Filter by color
           schema:
             type: string
-            enum:
-              - black
-              - brown
-              - green
-              - yellow
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: solid
           required: false
           in: query
-          description: solid
+          description: Filter by solid
           schema:
             type: string
         - name: wet
           required: false
           in: query
-          description: wet
+          description: Filter by wet
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -409,60 +404,55 @@ paths:
         - name: amount
           required: false
           in: query
-          description: amount
+          description: Filter by amount
           schema:
             type: string
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: color
           required: false
           in: query
-          description: color
+          description: Filter by color
           schema:
             type: string
-            enum:
-              - black
-              - brown
-              - green
-              - yellow
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: solid
           required: false
           in: query
-          description: solid
+          description: Filter by solid
           schema:
             type: string
         - name: wet
           required: false
           in: query
-          description: wet
+          description: Filter by wet
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -493,60 +483,55 @@ paths:
         - name: amount
           required: false
           in: query
-          description: amount
+          description: Filter by amount
           schema:
             type: string
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: color
           required: false
           in: query
-          description: color
+          description: Filter by color
           schema:
             type: string
-            enum:
-              - black
-              - brown
-              - green
-              - yellow
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: solid
           required: false
           in: query
-          description: solid
+          description: Filter by solid
           schema:
             type: string
         - name: wet
           required: false
           in: query
-          description: wet
+          description: Filter by wet
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -588,60 +573,55 @@ paths:
         - name: amount
           required: false
           in: query
-          description: amount
+          description: Filter by amount
           schema:
             type: string
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: color
           required: false
           in: query
-          description: color
+          description: Filter by color
           schema:
             type: string
-            enum:
-              - black
-              - brown
-              - green
-              - yellow
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: solid
           required: false
           in: query
-          description: solid
+          description: Filter by solid
           schema:
             type: string
         - name: wet
           required: false
           in: query
-          description: wet
+          description: Filter by wet
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -683,60 +663,55 @@ paths:
         - name: amount
           required: false
           in: query
-          description: amount
+          description: Filter by amount
           schema:
             type: string
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: color
           required: false
           in: query
-          description: color
+          description: Filter by color
           schema:
             type: string
-            enum:
-              - black
-              - brown
-              - green
-              - yellow
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: solid
           required: false
           in: query
-          description: solid
+          description: Filter by solid
           schema:
             type: string
         - name: wet
           required: false
           in: query
-          description: wet
+          description: Filter by wet
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -770,37 +745,37 @@ paths:
         - name: id
           required: false
           in: query
-          description: id
+          description: Filter by id
           schema:
             type: string
         - name: first_name
           required: false
           in: query
-          description: first_name
+          description: Filter by first_name
           schema:
             type: string
         - name: last_name
           required: false
           in: query
-          description: last_name
+          description: Filter by last_name
           schema:
             type: string
         - name: slug
           required: false
           in: query
-          description: slug
+          description: Filter by slug
           schema:
             type: string
         - name: birth_date
           required: false
           in: query
-          description: birth_date
+          description: Filter by birth_date
           schema:
             type: string
         - name: birth_time
           required: false
           in: query
-          description: birth_time
+          description: Filter by birth_time
           schema:
             type: string
         - name: ordering
@@ -877,37 +852,37 @@ paths:
         - name: id
           required: false
           in: query
-          description: id
+          description: Filter by id
           schema:
             type: string
         - name: first_name
           required: false
           in: query
-          description: first_name
+          description: Filter by first_name
           schema:
             type: string
         - name: last_name
           required: false
           in: query
-          description: last_name
+          description: Filter by last_name
           schema:
             type: string
         - name: slug
           required: false
           in: query
-          description: slug
+          description: Filter by slug
           schema:
             type: string
         - name: birth_date
           required: false
           in: query
-          description: birth_date
+          description: Filter by birth_date
           schema:
             type: string
         - name: birth_time
           required: false
           in: query
-          description: birth_time
+          description: Filter by birth_time
           schema:
             type: string
         - name: ordering
@@ -938,37 +913,37 @@ paths:
         - name: id
           required: false
           in: query
-          description: id
+          description: Filter by id
           schema:
             type: string
         - name: first_name
           required: false
           in: query
-          description: first_name
+          description: Filter by first_name
           schema:
             type: string
         - name: last_name
           required: false
           in: query
-          description: last_name
+          description: Filter by last_name
           schema:
             type: string
         - name: slug
           required: false
           in: query
-          description: slug
+          description: Filter by slug
           schema:
             type: string
         - name: birth_date
           required: false
           in: query
-          description: birth_date
+          description: Filter by birth_date
           schema:
             type: string
         - name: birth_time
           required: false
           in: query
-          description: birth_time
+          description: Filter by birth_time
           schema:
             type: string
         - name: ordering
@@ -1010,37 +985,37 @@ paths:
         - name: id
           required: false
           in: query
-          description: id
+          description: Filter by id
           schema:
             type: string
         - name: first_name
           required: false
           in: query
-          description: first_name
+          description: Filter by first_name
           schema:
             type: string
         - name: last_name
           required: false
           in: query
-          description: last_name
+          description: Filter by last_name
           schema:
             type: string
         - name: slug
           required: false
           in: query
-          description: slug
+          description: Filter by slug
           schema:
             type: string
         - name: birth_date
           required: false
           in: query
-          description: birth_date
+          description: Filter by birth_date
           schema:
             type: string
         - name: birth_time
           required: false
           in: query
-          description: birth_time
+          description: Filter by birth_time
           schema:
             type: string
         - name: ordering
@@ -1082,37 +1057,37 @@ paths:
         - name: id
           required: false
           in: query
-          description: id
+          description: Filter by id
           schema:
             type: string
         - name: first_name
           required: false
           in: query
-          description: first_name
+          description: Filter by first_name
           schema:
             type: string
         - name: last_name
           required: false
           in: query
-          description: last_name
+          description: Filter by last_name
           schema:
             type: string
         - name: slug
           required: false
           in: query
-          description: slug
+          description: Filter by slug
           schema:
             type: string
         - name: birth_date
           required: false
           in: query
-          description: birth_date
+          description: Filter by birth_date
           schema:
             type: string
         - name: birth_time
           required: false
           in: query
-          description: birth_time
+          description: Filter by birth_time
           schema:
             type: string
         - name: ordering
@@ -1146,73 +1121,61 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: method
           required: false
           in: query
-          description: method
+          description: Filter by method
           schema:
             type: string
-            enum:
-              - bottle
-              - left breast
-              - right breast
-              - both breasts
-              - parent fed
-              - self fed
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: type
           required: false
           in: query
-          description: type
+          description: Filter by type
           schema:
             type: string
-            enum:
-              - breast milk
-              - formula
-              - fortified breast milk
-              - solid food
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -1289,73 +1252,61 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: method
           required: false
           in: query
-          description: method
+          description: Filter by method
           schema:
             type: string
-            enum:
-              - bottle
-              - left breast
-              - right breast
-              - both breasts
-              - parent fed
-              - self fed
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: type
           required: false
           in: query
-          description: type
+          description: Filter by type
           schema:
             type: string
-            enum:
-              - breast milk
-              - formula
-              - fortified breast milk
-              - solid food
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -1386,73 +1337,61 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: method
           required: false
           in: query
-          description: method
+          description: Filter by method
           schema:
             type: string
-            enum:
-              - bottle
-              - left breast
-              - right breast
-              - both breasts
-              - parent fed
-              - self fed
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: type
           required: false
           in: query
-          description: type
+          description: Filter by type
           schema:
             type: string
-            enum:
-              - breast milk
-              - formula
-              - fortified breast milk
-              - solid food
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -1494,73 +1433,61 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: method
           required: false
           in: query
-          description: method
+          description: Filter by method
           schema:
             type: string
-            enum:
-              - bottle
-              - left breast
-              - right breast
-              - both breasts
-              - parent fed
-              - self fed
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: type
           required: false
           in: query
-          description: type
+          description: Filter by type
           schema:
             type: string
-            enum:
-              - breast milk
-              - formula
-              - fortified breast milk
-              - solid food
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -1602,73 +1529,61 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: method
           required: false
           in: query
-          description: method
+          description: Filter by method
           schema:
             type: string
-            enum:
-              - bottle
-              - left breast
-              - right breast
-              - both breasts
-              - parent fed
-              - self fed
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: type
           required: false
           in: query
-          description: type
+          description: Filter by type
           schema:
             type: string
-            enum:
-              - breast milk
-              - formula
-              - fortified breast milk
-              - solid food
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -1702,13 +1617,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -1785,13 +1700,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -1822,13 +1737,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -1870,13 +1785,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -1918,13 +1833,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -1958,13 +1873,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -2041,13 +1956,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -2078,13 +1993,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -2126,13 +2041,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -2174,13 +2089,419 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: ""
+      tags:
+        - api
+  /api/medicine/:
+    get:
+      operationId: listMedicines
+      description: ""
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - name: child
+          required: false
+          in: query
+          description: Filter by child
+          schema:
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by date
+          schema:
+            type: string
+        - name: date_max
+          required: false
+          in: query
+          description: Filter by date_max
+          schema:
+            type: string
+        - name: date_min
+          required: false
+          in: query
+          description: Filter by date_min
+          schema:
+            type: string
+        - name: dosage_unit
+          required: false
+          in: query
+          description: Filter by dosage_unit
+          schema:
+            type: string
+        - name: medicine_name
+          required: false
+          in: query
+          description: Filter by medicine_name
+          schema:
+            type: string
+        - name: tags
+          required: false
+          in: query
+          description: Filter by tags
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - count
+                  - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=400&limit=100
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=200&limit=100
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Medicine"
+          description: ""
+      tags:
+        - api
+    post:
+      operationId: createMedicine
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+          description: ""
+      tags:
+        - api
+  /api/medicine/{id}/:
+    get:
+      operationId: retrieveMedicine
+      description: ""
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique integer value identifying this Medicine.
+          schema:
+            type: string
+        - name: child
+          required: false
+          in: query
+          description: Filter by child
+          schema:
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by date
+          schema:
+            type: string
+        - name: date_max
+          required: false
+          in: query
+          description: Filter by date_max
+          schema:
+            type: string
+        - name: date_min
+          required: false
+          in: query
+          description: Filter by date_min
+          schema:
+            type: string
+        - name: dosage_unit
+          required: false
+          in: query
+          description: Filter by dosage_unit
+          schema:
+            type: string
+        - name: medicine_name
+          required: false
+          in: query
+          description: Filter by medicine_name
+          schema:
+            type: string
+        - name: tags
+          required: false
+          in: query
+          description: Filter by tags
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+          description: ""
+      tags:
+        - api
+    put:
+      operationId: updateMedicine
+      description: ""
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique integer value identifying this Medicine.
+          schema:
+            type: string
+        - name: child
+          required: false
+          in: query
+          description: Filter by child
+          schema:
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by date
+          schema:
+            type: string
+        - name: date_max
+          required: false
+          in: query
+          description: Filter by date_max
+          schema:
+            type: string
+        - name: date_min
+          required: false
+          in: query
+          description: Filter by date_min
+          schema:
+            type: string
+        - name: dosage_unit
+          required: false
+          in: query
+          description: Filter by dosage_unit
+          schema:
+            type: string
+        - name: medicine_name
+          required: false
+          in: query
+          description: Filter by medicine_name
+          schema:
+            type: string
+        - name: tags
+          required: false
+          in: query
+          description: Filter by tags
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+          description: ""
+      tags:
+        - api
+    patch:
+      operationId: partialUpdateMedicine
+      description: ""
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique integer value identifying this Medicine.
+          schema:
+            type: string
+        - name: child
+          required: false
+          in: query
+          description: Filter by child
+          schema:
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by date
+          schema:
+            type: string
+        - name: date_max
+          required: false
+          in: query
+          description: Filter by date_max
+          schema:
+            type: string
+        - name: date_min
+          required: false
+          in: query
+          description: Filter by date_min
+          schema:
+            type: string
+        - name: dosage_unit
+          required: false
+          in: query
+          description: Filter by dosage_unit
+          schema:
+            type: string
+        - name: medicine_name
+          required: false
+          in: query
+          description: Filter by medicine_name
+          schema:
+            type: string
+        - name: tags
+          required: false
+          in: query
+          description: Filter by tags
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Medicine"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+          description: ""
+      tags:
+        - api
+    delete:
+      operationId: destroyMedicine
+      description: ""
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique integer value identifying this Medicine.
+          schema:
+            type: string
+        - name: child
+          required: false
+          in: query
+          description: Filter by child
+          schema:
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by date
+          schema:
+            type: string
+        - name: date_max
+          required: false
+          in: query
+          description: Filter by date_max
+          schema:
+            type: string
+        - name: date_min
+          required: false
+          in: query
+          description: Filter by date_min
+          schema:
+            type: string
+        - name: dosage_unit
+          required: false
+          in: query
+          description: Filter by dosage_unit
+          schema:
+            type: string
+        - name: medicine_name
+          required: false
+          in: query
+          description: Filter by medicine_name
+          schema:
+            type: string
+        - name: tags
+          required: false
+          in: query
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2214,31 +2535,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2315,31 +2636,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2370,31 +2691,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2436,31 +2757,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2502,31 +2823,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -2560,43 +2881,43 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: ordering
@@ -2673,43 +2994,43 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: ordering
@@ -2740,43 +3061,43 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: ordering
@@ -2818,43 +3139,43 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: ordering
@@ -2896,43 +3217,43 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: ordering
@@ -2966,49 +3287,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3085,49 +3406,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3158,49 +3479,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3242,49 +3563,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3326,49 +3647,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3402,13 +3723,13 @@ paths:
         - name: last_used
           required: false
           in: query
-          description: last_used
+          description: Filter by last_used
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: ordering
@@ -3485,13 +3806,13 @@ paths:
         - name: last_used
           required: false
           in: query
-          description: last_used
+          description: Filter by last_used
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: ordering
@@ -3522,13 +3843,13 @@ paths:
         - name: last_used
           required: false
           in: query
-          description: last_used
+          description: Filter by last_used
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: ordering
@@ -3570,13 +3891,13 @@ paths:
         - name: last_used
           required: false
           in: query
-          description: last_used
+          description: Filter by last_used
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: ordering
@@ -3618,13 +3939,13 @@ paths:
         - name: last_used
           required: false
           in: query
-          description: last_used
+          description: Filter by last_used
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: ordering
@@ -3658,31 +3979,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3759,31 +4080,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3814,31 +4135,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3880,31 +4201,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -3946,31 +4267,31 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: DateTime
+          description: Filter by date
           schema:
             type: string
         - name: date_max
           required: false
           in: query
-          description: Max. DateTime
+          description: Filter by date_max
           schema:
             type: string
         - name: date_min
           required: false
           in: query
-          description: Min. DateTime
+          description: Filter by date_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4004,55 +4325,55 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: user
           required: false
           in: query
-          description: user
+          description: Filter by user
           schema:
             type: string
         - name: ordering
@@ -4129,55 +4450,55 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: user
           required: false
           in: query
-          description: user
+          description: Filter by user
           schema:
             type: string
         - name: ordering
@@ -4208,55 +4529,55 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: user
           required: false
           in: query
-          description: user
+          description: Filter by user
           schema:
             type: string
         - name: ordering
@@ -4298,55 +4619,55 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: user
           required: false
           in: query
-          description: user
+          description: Filter by user
           schema:
             type: string
         - name: ordering
@@ -4388,55 +4709,55 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: name
           required: false
           in: query
-          description: name
+          description: Filter by name
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: user
           required: false
           in: query
-          description: user
+          description: Filter by user
           schema:
             type: string
         - name: ordering
@@ -4470,49 +4791,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4589,49 +4910,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4662,49 +4983,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4746,49 +5067,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4830,49 +5151,49 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: end
           required: false
           in: query
-          description: End DateTime
+          description: Filter by end
           schema:
             type: string
         - name: end_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by end_max
           schema:
             type: string
         - name: end_min
           required: false
           in: query
-          description: Min. End DateTime
+          description: Filter by end_min
           schema:
             type: string
         - name: start
           required: false
           in: query
-          description: Start DateTime
+          description: Filter by start
           schema:
             type: string
         - name: start_max
           required: false
           in: query
-          description: Max. End DateTime
+          description: Filter by start_max
           schema:
             type: string
         - name: start_min
           required: false
           in: query
-          description: Min. Start DateTime
+          description: Filter by start_min
           schema:
             type: string
         - name: tags
           required: false
           in: query
-          description: tag
+          description: Filter by tags
           schema:
             type: string
         - name: ordering
@@ -4906,13 +5227,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -4989,13 +5310,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -5026,13 +5347,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -5074,13 +5395,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -5122,13 +5443,13 @@ paths:
         - name: child
           required: false
           in: query
-          description: child
+          description: Filter by child
           schema:
             type: string
         - name: date
           required: false
           in: query
-          description: date
+          description: Filter by date
           schema:
             type: string
         - name: ordering
@@ -5378,6 +5699,55 @@ components:
       required:
         - child
         - height
+    Medicine:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        child:
+          type: integer
+        medicine_name:
+          type: string
+          description: Name of the medication administered
+          maxLength: 255
+        dosage:
+          type: number
+          description: Amount of medication given
+        dosage_unit:
+          enum:
+            - mg
+            - ml
+            - tablets
+            - drops
+            - tsp
+            - tbsp
+          type: string
+        time:
+          type: string
+          format: date-time
+        next_dose_interval:
+          type: string
+          nullable: true
+          description: Time until next dose can be given
+        next_dose_time:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: Calculated time when next dose is allowed
+        notes:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - child
+        - medicine_name
+        - dosage
+        - dosage_unit
     Note:
       type: object
       properties:

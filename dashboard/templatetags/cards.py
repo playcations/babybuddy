@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import template
-from django.db.models import Avg, Count, Q, Sum
+from django.db.models import Avg, Count, Max, Q, Sum
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -843,6 +843,130 @@ def card_tummytime_day(context, child, date=None):
         "stats": stats,
         "instances": instances,
         "last": instances.first(),
+        "empty": empty,
+        "hide_empty": _hide_empty(context),
+    }
+
+
+@register.inclusion_tag("cards/medicine_last.html", takes_context=True)
+def card_medicine_last(context, child):
+    """
+    Information about the most recent medicine administration.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with the most recent Medicine instance.
+    """
+    instance = (
+        models.Medicine.objects.filter(child=child)
+        .filter(**_filter_data_age(context, "time"))
+        .select_related("child")
+        .order_by("-time")
+        .first()
+    )
+
+    # Check user settings for card visibility
+    hide_card = False
+    if (
+        instance
+        and hasattr(context.get("request"), "user")
+        and context["request"].user.is_authenticated
+    ):
+        try:
+            settings = context["request"].user.settings
+            hide_threshold = settings.medicine_card_hide_threshold
+            if hide_threshold:
+                time_since = timezone.now() - instance.time
+                hide_card = time_since > hide_threshold
+        except:
+            pass
+
+    empty = not instance or hide_card
+
+    return {
+        "type": "medicine",
+        "medicine": instance,
+        "empty": empty,
+        "hide_empty": _hide_empty(context),
+        "next_dose_ready": instance.next_dose_ready if instance else False,
+        "next_dose_time": instance.next_dose_time if instance else None,
+    }
+
+
+@register.inclusion_tag("cards/medicine_due.html", takes_context=True)
+def card_medicine_due(context, child):
+    """
+    Show medicines that are due or overdue.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with due medicines.
+    """
+    due_medicines = (
+        models.Medicine.objects.filter(
+            child=child,
+            next_dose_time__lte=timezone.now(),
+            next_dose_time__isnull=False,
+        )
+        .filter(**_filter_data_age(context, "time"))
+        .select_related("child")
+        .order_by("next_dose_time")[:3]
+    )
+
+    empty = not due_medicines
+
+    return {
+        "type": "medicine_due",
+        "medicines": due_medicines,
+        "empty": empty,
+        "hide_empty": _hide_empty(context),
+    }
+
+
+@register.inclusion_tag("cards/medicine_status.html", takes_context=True)
+def card_medicine_status(context, child):
+    """
+    Show status of recently given medicines - both recurring and as-needed.
+    Displays safety windows and repeat dose options.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with active medicines and their status.
+    """
+    from datetime import timedelta
+
+    # Get medicines given in the last 48 hours that are still active
+    cutoff_time = timezone.now() - timedelta(hours=48)
+
+    # Get unique medicine names with their most recent administration
+    recent_medicines = (
+        models.Medicine.objects.filter(
+            child=child, is_active=True, time__gte=cutoff_time
+        )
+        .values("medicine_name")
+        .annotate(last_given=Max("time"), latest_id=Max("id"))
+        .order_by("-last_given")[:5]
+    )
+
+    # Get full medicine objects for the latest of each type
+    medicine_status = []
+    for med_data in recent_medicines:
+        medicine = models.Medicine.objects.get(id=med_data["latest_id"])
+
+        # Update last_given_time if not set
+        if not medicine.last_given_time:
+            medicine.last_given_time = medicine.time
+            medicine.save(update_fields=["last_given_time"])
+
+        medicine_status.append(
+            {
+                "medicine": medicine,
+                "is_safe": medicine.is_safe_to_give,
+                "status_text": medicine.last_dose_status,
+                "time_until_safe": medicine.time_until_safe,
+                "last_given_display": medicine.last_given_time or medicine.time,
+            }
+        )
+
+    empty = not medicine_status
+
+    return {
+        "type": "medicine_status",
+        "medicine_status": medicine_status,
         "empty": empty,
         "hide_empty": _hide_empty(context),
     }
