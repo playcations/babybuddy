@@ -238,7 +238,7 @@ def _add_medicine(min_date, max_date, events, child):
                 "event": _("%(child)s took %(medicine)s.")
                 % {
                     "child": instance.child.first_name,
-                    "medicine": instance.medicine_name,
+                    "medicine": instance.name,
                 },
                 "details": details,
                 "edit_link": reverse("core:medicine-update", args=[instance.id]),

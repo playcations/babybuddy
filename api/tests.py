@@ -481,7 +481,7 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
         # Create a medicine entry first, then delete it
         data = {
             "child": 1,
-            "medicine_name": "Test Medicine for Delete",
+            "name": "Test Medicine for Delete",
             "dosage": "5.0",
             "dosage_unit": "ml",
             "time": "2017-11-18T12:00:00-05:00",
@@ -505,7 +505,7 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
     def test_post(self):
         data = {
             "child": 1,
-            "medicine_name": "Tylenol",
+            "name": "Tylenol",
             "dosage": "5.0",
             "dosage_unit": "ml",
             "time": "2017-11-18T12:00:00-05:00",
@@ -515,7 +515,7 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
         response = self.client.post(self.endpoint, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         obj = self.model.objects.get(pk=response.data["id"])
-        self.assertEqual(obj.medicine_name, data["medicine_name"])
+        self.assertEqual(obj.name, data["medicine_name"])
         self.assertEqual(str(obj.dosage), data["dosage"])
         self.assertEqual(obj.dosage_unit, data["dosage_unit"])
         self.assertEqual(obj.notes, data["notes"])
@@ -525,20 +525,20 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
     def test_post_null_time(self):
         data = {
             "child": 1,
-            "medicine_name": "Vitamin D",
+            "name": "Vitamin D",
             "dosage": "1",
             "dosage_unit": "drops",
         }
         response = self.client.post(self.endpoint, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         obj = self.model.objects.get(pk=response.data["id"])
-        self.assertEqual(obj.medicine_name, data["medicine_name"])
+        self.assertEqual(obj.name, data["medicine_name"])
 
     def test_patch(self):
         # First create a medicine entry to patch
         data = {
             "child": 1,
-            "medicine_name": "Test Medicine",
+            "name": "Test Medicine",
             "dosage": "2.5",
             "dosage_unit": "ml",
             "time": "2017-11-18T12:00:00-05:00",

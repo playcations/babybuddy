@@ -1,5 +1,5 @@
 {% extends 'babybuddy/page.html' %}
-{% load i18n widget_tweaks %}
+{% load datetime i18n widget_tweaks %}
 {% block title %}
     {% trans "Medicine" %}
 {% endblock %}
@@ -10,29 +10,9 @@
     <h1>
         {% trans "Medicine" %}
         {% if perms.core.add_medicine %}
-            <div class="btn-group" role="group">
-                <a href="{% url 'core:medicine-add' %}" class="btn btn-sm btn-success">
-                    <i class="icon-medicine" aria-hidden="true"></i> {% trans "Add Medicine" %}
-                </a>
-                <button type="button"
-                        class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    <span class="visually-hidden">{% trans "Toggle Dropdown" %}</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="{% url 'core:medicine-add' %}">
-                            <i class="icon-add" aria-hidden="true"></i> {% trans "Single Entry" %}
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{% url 'core:medicine-bulk-add' %}">
-                            <i class="icon-list" aria-hidden="true"></i> {% trans "Bulk Add" %}
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <a href="{% url 'core:medicine-add' %}" class="btn btn-sm btn-success">
+                <i class="icon-medicine" aria-hidden="true"></i> {% trans "Add Medicine" %}
+            </a>
         {% endif %}
     </h1>
     {% include 'babybuddy/filter.html' %}
@@ -41,7 +21,7 @@
             <thead>
                 <tr>
                     <th>{% trans "Actions" %}</th>
-                    <th>{% trans "Time" %}</th>
+                    <th>{% trans "Date" %}</th>
                     {% if not unique_child %}
                         <th>{% trans "Child" %}</th>
                     {% endif %}
@@ -72,13 +52,13 @@
                                 {% endif %}
                             </div>
                         </td>
-                        <th scope="row">{{ medicine.time }}</th>
+                        <th scope="row">{{ medicine.time|datetime_short }}</th>
                         {% if not unique_child %}
                             <td>
                                 <a href="{% url 'core:child' medicine.child.slug %}">{{ medicine.child }}</a>
                             </td>
                         {% endif %}
-                        <td>{{ medicine.medicine_name }}</td>
+                        <td>{{ medicine.name }}</td>
                         <td>{{ medicine.dosage }} {{ medicine.get_dosage_unit_display }}</td>
                         <td>
                             {% if medicine.next_dose_time %}

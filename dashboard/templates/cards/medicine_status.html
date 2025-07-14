@@ -11,7 +11,7 @@
                 <div class="medicine-status-item {% if not forloop.last %}border-bottom{% endif %} pb-3 {% if not forloop.first %}pt-3{% endif %}">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="medicine-info flex-grow-1">
-                            <h6 class="medicine-name mb-1">{{ item.medicine.medicine_name }}</h6>
+                            <h6 class="medicine-name mb-1">{{ item.medicine.name }}</h6>
                             <div class="medicine-details">
                                 <small class="text-muted">
                                     {{ item.medicine.dosage }} {{ item.medicine.get_dosage_unit_display }}
@@ -33,21 +33,19 @@
                             </div>
                         </div>
                         <div class="medicine-actions ms-3">
-                            {% if item.is_safe %}
-                                <button type="button"
-                                        class="btn btn-outline-primary btn-sm repeat-dose-btn"
-                                        data-medicine-id="{{ item.medicine.id }}"
-                                        data-medicine-name="{{ item.medicine.medicine_name }}"
-                                        title="{% trans 'Repeat dose' %}">
-                                    <i class="icon-refresh"></i>
-                                </button>
-                            {% endif %}
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm repeat-dose-btn"
+                                    data-medicine-id="{{ item.medicine.id }}"
+                                    data-medicine-name="{{ item.medicine.name }}"
+                                    title="{% trans 'Repeat dose' %}">
+                                <i class="icon-refresh"></i>
+                            </button>
                             <button type="button"
                                     class="btn btn-outline-secondary btn-sm remove-medicine-btn"
                                     data-medicine-id="{{ item.medicine.id }}"
-                                    data-medicine-name="{{ item.medicine.medicine_name }}"
+                                    data-medicine-name="{{ item.medicine.name }}"
                                     title="{% trans 'Remove from list' %}">
-                                <i class="icon-remove"></i>
+                                <i class="icon-delete"></i>
                             </button>
                         </div>
                     </div>

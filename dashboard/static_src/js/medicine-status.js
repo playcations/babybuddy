@@ -6,7 +6,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const medicineId = this.dataset.medicineId;
       const medicineName = this.dataset.medicineName;
 
-      if (confirm(`Repeat dose of ${medicineName}?`)) {
+      // Check if medicine is in safety window
+      const medicineItem = this.closest(".medicine-status-item");
+      const statusBadge = medicineItem.querySelector(".badge");
+      const isInSafetyWindow =
+        statusBadge && statusBadge.classList.contains("bg-warning");
+
+      let confirmMessage;
+      if (isInSafetyWindow) {
+        const statusText = statusBadge.textContent.trim();
+        confirmMessage = `⚠️ WARNING: ${medicineName} is still in safety window (${statusText}).\n\nAre you sure you want to give another dose now?`;
+      } else {
+        confirmMessage = `Repeat dose of ${medicineName}?`;
+      }
+
+      if (confirm(confirmMessage)) {
         repeatMedicineDose(medicineId, this);
       }
     });

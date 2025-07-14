@@ -200,7 +200,7 @@ class MedicineSerializer(CoreModelSerializer, TaggableSerializer):
         fields = (
             "id",
             "child",
-            "medicine_name",
+            "name",
             "dosage",
             "dosage_unit",
             "time",

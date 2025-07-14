@@ -312,17 +312,10 @@ class HeightForm(CoreModelForm, TaggableModelForm):
 class MedicineForm(CoreModelForm, TaggableModelForm):
     fieldsets = [
         {
-            "fields": ["child", "time", "medicine_name", "dosage", "dosage_unit"],
+            "fields": ["child", "time", "name", "dosage", "dosage_unit"],
             "layout": "required",
         },
-        {
-            "fields": ["is_recurring"],
-            "layout": "medication_type",
-        },
-        {
-            "fields": ["next_dose_interval"],
-            "layout": "interval_section",
-        },
+        {"fields": ["is_recurring", "next_dose_interval"]},
         {"fields": ["notes", "tags"], "layout": "advanced"},
     ]
 
@@ -330,7 +323,7 @@ class MedicineForm(CoreModelForm, TaggableModelForm):
         model = models.Medicine
         fields = [
             "child",
-            "medicine_name",
+            "name",
             "dosage",
             "dosage_unit",
             "time",

@@ -312,7 +312,7 @@ class MedicineRepeatLast(CoreAddView):
 
                 if last_medicine:
                     initial["child"] = child
-                    initial["medicine_name"] = last_medicine.medicine_name
+                    initial["name"] = last_medicine.name
                     initial["dosage"] = last_medicine.dosage
                     initial["dosage_unit"] = last_medicine.dosage_unit
                     initial["next_dose_interval"] = last_medicine.next_dose_interval
@@ -334,42 +334,6 @@ class MedicineRepeatLast(CoreAddView):
         context = super().get_context_data(**kwargs)
         context["repeat_mode"] = True
         return context
-
-
-class MedicineBulkAdd(CoreAddView):
-    model = models.Medicine
-    permission_required = ("core.add_medicine",)
-    form_class = forms.MedicineForm
-    success_url = reverse_lazy("core:medicine-list")
-    template_name = "core/medicine_bulk_form.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["bulk_mode"] = True
-        return context
-
-    def form_valid(self, form):
-        """Handle bulk creation of medicine entries."""
-        response = super().form_valid(form)
-
-        # Add a success message for bulk operations
-        from django.contrib import messages
-
-        messages.success(
-            self.request,
-            _(
-                "Medicine entry added successfully. You can quickly add another entry below."
-            ),
-        )
-
-        # Redirect back to the bulk form with the same initial data
-        child_id = (
-            form.cleaned_data["child"].id if form.cleaned_data.get("child") else None
-        )
-        if child_id:
-            return redirect(f"{self.request.path}?child={child_id}")
-
-        return response
 
 
 class MedicineUpdate(CoreUpdateView):
@@ -401,7 +365,7 @@ class MedicineRepeatDose(PermissionRequiredMixin, View):
             # Create a new medicine entry with current time
             new_medicine = models.Medicine(
                 child=original.child,
-                medicine_name=original.medicine_name,
+                name=original.name,
                 dosage=original.dosage,
                 dosage_unit=original.dosage_unit,
                 time=timezone.now(),
@@ -409,7 +373,7 @@ class MedicineRepeatDose(PermissionRequiredMixin, View):
                 is_recurring=original.is_recurring,
                 last_given_time=timezone.now(),
                 is_active=True,
-                notes=f"Repeated dose of {original.medicine_name}",
+                notes=f"Repeated dose of {original.name}",
             )
             new_medicine.save()
 

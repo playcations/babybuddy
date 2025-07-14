@@ -106,9 +106,6 @@ urlpatterns = [
     path("medicine/", views.MedicineList.as_view(), name="medicine-list"),
     path("medicine/add/", views.MedicineAdd.as_view(), name="medicine-add"),
     path(
-        "medicine/add/bulk/", views.MedicineBulkAdd.as_view(), name="medicine-bulk-add"
-    ),
-    path(
         "medicine/add/repeat/",
         views.MedicineRepeatLast.as_view(),
         name="medicine-repeat-last",

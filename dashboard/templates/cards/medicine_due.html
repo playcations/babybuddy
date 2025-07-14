@@ -19,7 +19,7 @@
         {% for medicine in medicines %}
             <div class="mb-2{% if not forloop.last %} border-bottom pb-2{% endif %}">
                 <div>
-                    <strong>{{ medicine.medicine_name }}</strong>
+                    <strong>{{ medicine.name }}</strong>
                     <span class="text-muted">{{ medicine.dosage }} {{ medicine.get_dosage_unit_display }}</span>
                 </div>
                 <div>

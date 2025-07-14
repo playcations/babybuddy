@@ -180,7 +180,7 @@ class MedicineAdmin(ImportExportMixin, ExportActionMixin, admin.ModelAdmin):
     list_display = (
         "time",
         "child",
-        "medicine_name",
+        "name",
         "dosage",
         "dosage_unit",
         "next_dose_time",
@@ -189,7 +189,7 @@ class MedicineAdmin(ImportExportMixin, ExportActionMixin, admin.ModelAdmin):
     search_fields = (
         "child__first_name",
         "child__last_name",
-        "medicine_name",
+        "name",
     )
     resource_class = MedicineImportExportResource
 

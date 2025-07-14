@@ -18,7 +18,7 @@
 {% block content %}
     {% if medicine %}
         <div>
-            <strong>{{ medicine.medicine_name }}</strong>
+            <strong>{{ medicine.name }}</strong>
         </div>
         <div>{{ medicine.dosage }} {{ medicine.get_dosage_unit_display }}</div>
         {% if medicine.next_dose_time %}

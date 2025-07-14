@@ -81,7 +81,7 @@ class MedicineViewSet(viewsets.ModelViewSet):
     queryset = models.Medicine.objects.all()
     serializer_class = serializers.MedicineSerializer
     filterset_class = filters.MedicineFilter
-    ordering_fields = ("time", "medicine_name", "dosage")
+    ordering_fields = ("time", "name", "dosage")
     ordering = "-time"
 
 

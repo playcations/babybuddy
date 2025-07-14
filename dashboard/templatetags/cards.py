@@ -937,7 +937,7 @@ def card_medicine_status(context, child):
         models.Medicine.objects.filter(
             child=child, is_active=True, time__gte=cutoff_time
         )
-        .values("medicine_name")
+        .values("name")
         .annotate(last_given=Max("time"), latest_id=Max("id"))
         .order_by("-last_given")[:5]
     )

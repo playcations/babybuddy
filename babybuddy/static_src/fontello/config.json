@@ -145,12 +145,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "d4816c0845aa43767213d45574b3b145",
-      "css": "timeline",
-      "code": 61914,
-      "src": "fontawesome"
-    },
-    {
       "uid": "53c977df16b09e3f7700a27ec90c43dc",
       "css": "timer",
       "code": 59403,
@@ -283,9 +277,15 @@
       "src": "fontawesome"
     },
     {
-      "uid": "d4816c0845aa43767213d45574b3b145",
+      "uid": "46120eb259799eab0dac0691137e5706",
       "css": "medicine",
-      "code": 62218,
+      "code": 61690,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "d4816c0845aa43767213d45574b3b145",
+      "css": "timeline",
+      "code": 61914,
       "src": "fontawesome"
     }
   ]

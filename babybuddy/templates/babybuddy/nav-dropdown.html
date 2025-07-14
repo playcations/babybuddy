@@ -204,7 +204,7 @@
 {% if perms.core.view_temperature %}
     <a class="dropdown-item{% if request.path == '/temperature/' %} active{% endif %}"
        href="{% url 'core:temperature-list' %}">
-        <i class="icon-temperature" aria-hidden="true"></i>
+        <i class="icon-medicine" aria-hidden="true"></i>
         {% trans "Temperature" %}
     </a>
 {% endif %}

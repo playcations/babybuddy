@@ -408,7 +408,7 @@ class MedicineTestCase(TestCase):
         )
         self.medicine = models.Medicine.objects.create(
             child=self.child,
-            medicine_name="Tylenol",
+            name="Tylenol",
             dosage=5.0,
             dosage_unit="ml",
             time=timezone.localtime() - timezone.timedelta(hours=1),
@@ -418,7 +418,7 @@ class MedicineTestCase(TestCase):
     def test_medicine_create(self):
         self.assertEqual(self.medicine, models.Medicine.objects.first())
         self.assertEqual(str(self.medicine), "Medicine")
-        self.assertEqual(self.medicine.medicine_name, "Tylenol")
+        self.assertEqual(self.medicine.name, "Tylenol")
         self.assertEqual(self.medicine.dosage, 5.0)
         self.assertEqual(self.medicine.dosage_unit, "ml")
 
@@ -433,7 +433,7 @@ class MedicineTestCase(TestCase):
         # Medicine given 5 hours ago with 4-hour interval should be ready
         old_medicine = models.Medicine.objects.create(
             child=self.child,
-            medicine_name="Old Medicine",
+            name="Old Medicine",
             dosage=2.5,
             dosage_unit="mg",
             time=timezone.localtime() - timezone.timedelta(hours=5),
@@ -445,7 +445,7 @@ class MedicineTestCase(TestCase):
         # Medicine with no interval should always be ready
         no_interval_medicine = models.Medicine.objects.create(
             child=self.child,
-            medicine_name="No Interval Medicine",
+            name="No Interval Medicine",
             dosage=1.0,
             dosage_unit="tablets",
             time=timezone.localtime(),
@@ -457,7 +457,7 @@ class MedicineTestCase(TestCase):
 
         medicine = models.Medicine(
             child=self.child,
-            medicine_name="Test Medicine",
+            name="Test Medicine",
             dosage=-1.0,
             dosage_unit="mg",
             time=timezone.localtime(),
@@ -470,7 +470,7 @@ class MedicineTestCase(TestCase):
 
         medicine = models.Medicine(
             child=self.child,
-            medicine_name="Test Medicine",
+            name="Test Medicine",
             dosage=5.0,
             dosage_unit="ml",
             time=timezone.localtime(),
@@ -507,7 +507,7 @@ class MedicineTestCase(TestCase):
         future_time = timezone.localtime() + timezone.timedelta(hours=1)
         medicine = models.Medicine(
             child=self.child,
-            medicine_name="Future Medicine",
+            name="Future Medicine",
             dosage=5.0,
             dosage_unit="ml",
             time=future_time,
@@ -521,7 +521,7 @@ class MedicineTestCase(TestCase):
         # Test that tablet dosage must be whole number
         medicine = models.Medicine(
             child=self.child,
-            medicine_name="Tablet Medicine",
+            name="Tablet Medicine",
             dosage=2.5,  # Half tablet should fail
             dosage_unit="tablets",
             time=timezone.localtime(),
@@ -542,7 +542,7 @@ class MedicineTestCase(TestCase):
         # Test dosage too high for ml
         medicine = models.Medicine(
             child=self.child,
-            medicine_name="High Dose Medicine",
+            name="High Dose Medicine",
             dosage=1000.0,  # 1000ml is too high
             dosage_unit="ml",
             time=timezone.localtime(),
@@ -570,7 +570,7 @@ class MedicineTestCase(TestCase):
         duplicate_time = self.medicine.time + timezone.timedelta(minutes=2)
         duplicate_medicine = models.Medicine(
             child=self.child,
-            medicine_name="Tylenol",  # Same as existing
+            name="Tylenol",  # Same as existing
             dosage=5.0,  # Same as existing
             dosage_unit="ml",  # Same as existing
             time=duplicate_time,  # Within 5 minutes
@@ -583,7 +583,7 @@ class MedicineTestCase(TestCase):
         later_time = self.medicine.time + timezone.timedelta(minutes=10)
         later_medicine = models.Medicine(
             child=self.child,
-            medicine_name="Tylenol",
+            name="Tylenol",
             dosage=5.0,
             dosage_unit="ml",
             time=later_time,
@@ -597,7 +597,7 @@ class MedicineTestCase(TestCase):
         # Test that different medicine name is allowed
         different_medicine = models.Medicine(
             child=self.child,
-            medicine_name="Advil",  # Different name
+            name="Advil",  # Different name
             dosage=5.0,
             dosage_unit="ml",
             time=duplicate_time,
@@ -615,7 +615,7 @@ class MedicineTestCase(TestCase):
         duplicate_time = self.medicine.time + timezone.timedelta(minutes=2)
         duplicate_medicine = models.Medicine(
             child=self.child,
-            medicine_name="TYLENOL",  # Different case
+            name="TYLENOL",  # Different case
             dosage=5.0,
             dosage_unit="ml",
             time=duplicate_time,
