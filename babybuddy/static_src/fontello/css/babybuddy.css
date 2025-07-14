@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'babybuddy';
-  src: url('../font/babybuddy.eot?89757116');
-  src: url('../font/babybuddy.eot?89757116#iefix') format('embedded-opentype'),
-       url('../font/babybuddy.woff2?89757116') format('woff2'),
-       url('../font/babybuddy.woff?89757116') format('woff'),
-       url('../font/babybuddy.ttf?89757116') format('truetype'),
-       url('../font/babybuddy.svg?89757116#babybuddy') format('svg');
+  src: url('../font/babybuddy.eot?24396173');
+  src: url('../font/babybuddy.eot?24396173#iefix') format('embedded-opentype'),
+       url('../font/babybuddy.woff2?24396173') format('woff2'),
+       url('../font/babybuddy.woff?24396173') format('woff'),
+       url('../font/babybuddy.ttf?24396173') format('truetype'),
+       url('../font/babybuddy.svg?24396173#babybuddy') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'babybuddy';
-    src: url('../font/babybuddy.svg?89757116#babybuddy') format('svg');
+    src: url('../font/babybuddy.svg?24396173#babybuddy') format('svg');
   }
 }
 */
