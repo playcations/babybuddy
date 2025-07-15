@@ -117,6 +117,7 @@ jobs:
         platforms: linux/amd64
         push: false
         tags: test-image:latest
+        load: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
         build-args: |
