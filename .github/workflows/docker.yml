@@ -29,21 +29,30 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository }}
+        tags: |
+          type=ref,event=branch
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=raw,value=latest,enable={{is_default_branch}}
+        labels: |
+          org.opencontainers.image.title=Baby Buddy
+          org.opencontainers.image.description=A buddy for babies! Helps caregivers track sleep, feedings, diaper changes, and more.
+          org.opencontainers.image.vendor=Baby Buddy Community
+          org.opencontainers.image.licenses=BSD-2-Clause
+
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: .
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: |
-          ghcr.io/${{ github.repository }}:latest
-          ghcr.io/${{ github.repository }}:${{ github.sha }}
-        labels: |
-          org.opencontainers.image.title=Baby Buddy
-          org.opencontainers.image.description=A buddy for babies! Helps caregivers track sleep, feedings, diaper changes, and more.
-          org.opencontainers.image.vendor=Baby Buddy Community
-          org.opencontainers.image.licenses=BSD-2-Clause
-          org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-          org.opencontainers.image.revision=${{ github.sha }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
