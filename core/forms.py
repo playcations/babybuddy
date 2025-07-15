@@ -170,6 +170,18 @@ class BMIForm(CoreModelForm, TaggableModelForm):
 
 
 class BottleFeedingForm(CoreModelForm, TaggableModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # For bottle feeding, end time should always match start time
+        if self.is_bound and "start" in self.data:
+            # Create a mutable copy of the QueryDict for bound forms
+            data = self.data.copy()
+            data["end"] = self.data["start"]
+            self.data = data
+        elif not self.is_bound and self.initial.get("start"):
+            # Set initial end time to match start time for unbound forms
+            self.initial["end"] = self.initial["start"]
+
     fieldsets = [
         {"fields": ["child", "type", "start", "amount"], "layout": "required"},
         {"fields": ["notes", "tags"], "layout": "advanced"},

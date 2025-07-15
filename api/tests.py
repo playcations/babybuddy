@@ -515,7 +515,7 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
         response = self.client.post(self.endpoint, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         obj = self.model.objects.get(pk=response.data["id"])
-        self.assertEqual(obj.name, data["medicine_name"])
+        self.assertEqual(obj.name, data["name"])
         self.assertEqual(str(obj.dosage), data["dosage"])
         self.assertEqual(obj.dosage_unit, data["dosage_unit"])
         self.assertEqual(obj.notes, data["notes"])
@@ -532,7 +532,7 @@ class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
         response = self.client.post(self.endpoint, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         obj = self.model.objects.get(pk=response.data["id"])
-        self.assertEqual(obj.name, data["medicine_name"])
+        self.assertEqual(obj.name, data["name"])
 
     def test_patch(self):
         # First create a medicine entry to patch

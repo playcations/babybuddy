@@ -300,6 +300,31 @@ class FeedingFormsTestCase(FormsTestCaseBase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
 
+    def test_bottle_feeding_add_end_equals_start(self):
+        # Ensure no existing feedings interfere with the test.
+        models.Feeding.objects.all().delete()
+
+        start_time = timezone.localtime() - timezone.timedelta(minutes=10)
+        params = {
+            "child": self.child.id,
+            "start": self.localtime_string(start_time),
+            "type": "formula",  # Or any type, doesn't matter for this test
+            "method": "bottle",  # This is crucial for the BottleFeedingForm
+            "amount": 100,
+        }
+
+        # Simulate POST request to the dedicated bottle feeding add page
+        page = self.c.post("/feedings/bottle/add/", params, follow=True)
+
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
+
+        # Retrieve the newly created feeding object
+        new_feeding = models.Feeding.objects.first()
+
+        # Assert that end time equals start time
+        self.assertEqual(new_feeding.start, new_feeding.end)
+
     def test_edit(self):
         end = timezone.localtime()
         start = end - timezone.timedelta(minutes=30)
