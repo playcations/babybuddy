@@ -1,0 +1,53 @@
+services:
+  babybuddy:
+    build: .
+    container_name: babybuddy
+    ports:
+      - "8000:8000"
+    environment:
+      # LinuxServer compatibility - User/Group IDs
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      
+      # Optional: Additional security settings
+      - CSRF_TRUSTED_ORIGINS=http://localhost:8000,https://your-domain.com
+      
+      # Optional: Database configuration (defaults to SQLite)
+      # - DATABASE_URL=postgresql://user:password@db:5432/babybuddy
+      
+      # Optional: Create default admin user
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+
+    volumes:
+      # Persistent data storage (LinuxServer compatibility)
+      - babybuddy_config:/config
+
+    restart: unless-stopped
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: PostgreSQL database
+  # Uncomment this section if you want to use PostgreSQL instead of SQLite
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: babybuddy_db
+  #   environment:
+  #     - POSTGRES_DB=babybuddy
+  #     - POSTGRES_USER=babybuddy
+  #     - POSTGRES_PASSWORD=password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+volumes:
+  babybuddy_config:
+  # postgres_data:  # Uncomment if using PostgreSQL
