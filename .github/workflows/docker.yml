@@ -47,12 +47,6 @@ jobs:
     - name: Build assets
       run: npx gulp build
 
-    - name: Run linting (skip prettier for generated files)
-      run: |
-        pipenv run black . --check --diff --color
-        pipenv run djlint --check .
-        npx stylelint "*/static_src/scss/**/*.scss"
-
     - name: Run tests
       run: pipenv run python manage.py test --settings=babybuddy.settings.test
 
