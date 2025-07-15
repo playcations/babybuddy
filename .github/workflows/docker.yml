@@ -47,6 +47,15 @@ jobs:
     - name: Build assets
       run: npx gulp build
 
+    - name: Compile translations
+      run: npx gulp compilemessages
+
+    - name: Run database migrations
+      run: pipenv run python manage.py migrate --settings=babybuddy.settings.test
+
+    - name: Collect static files
+      run: pipenv run python manage.py collectstatic --noinput --settings=babybuddy.settings.test
+
     - name: Run tests
       run: pipenv run python manage.py test --settings=babybuddy.settings.test
 
