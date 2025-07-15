@@ -325,6 +325,37 @@ class FeedingFormsTestCase(FormsTestCaseBase):
         # Assert that end time equals start time
         self.assertEqual(new_feeding.start, new_feeding.end)
 
+    def test_bottle_feeding_during_existing_period_should_succeed(self):
+        # Test that reproduces the bug: bottle feeding should be allowed during breast feeding periods
+        # Create a breast feeding session that spans 30 minutes
+        breast_start = timezone.localtime() - timezone.timedelta(minutes=45)
+        breast_end = timezone.localtime() - timezone.timedelta(minutes=15)
+        models.Feeding.objects.create(
+            child=self.child,
+            start=breast_start,
+            end=breast_end,
+            type="breast milk",
+            method="left breast",
+            amount=0,
+        )
+
+        # Try to add a bottle feeding during the breast feeding period
+        bottle_time = timezone.localtime() - timezone.timedelta(
+            minutes=30
+        )  # middle of breast feeding
+        params = {
+            "child": self.child.id,
+            "start": self.localtime_string(bottle_time),
+            "type": "formula",
+            "method": "bottle",
+            "amount": 100,
+        }
+
+        # This should succeed because bottle feedings are instantaneous
+        page = self.c.post("/feedings/bottle/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
+
     def test_edit(self):
         end = timezone.localtime()
         start = end - timezone.timedelta(minutes=30)

@@ -4,3 +4,7 @@ vendor
 *.css
 *.scss
 babybuddy/static_src/fontello/**
+docker/
+docker-compose.yml
+Dockerfile
+*.md

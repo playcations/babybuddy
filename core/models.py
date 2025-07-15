@@ -438,7 +438,9 @@ class Feeding(models.Model):
     def clean(self):
         validate_time(self.start, "start")
         validate_duration(self)
-        validate_unique_period(Feeding.objects.filter(child=self.child), self)
+        # Skip period validation for bottle feedings (method='bottle' and start==end)
+        if not (getattr(self, "method", None) == "bottle" and self.start == self.end):
+            validate_unique_period(Feeding.objects.filter(child=self.child), self)
 
 
 class HeadCircumference(models.Model):
