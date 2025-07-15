@@ -41,6 +41,9 @@ jobs:
     - name: Install Node.js dependencies
       run: npm install
 
+    - name: Generate fontello fonts
+      run: npx gulp updateglyphs
+
     - name: Build assets
       run: npx gulp build
 
