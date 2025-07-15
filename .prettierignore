@@ -3,3 +3,4 @@ vendor
 *.html
 *.css
 *.scss
+babybuddy/static_src/fontello/**
