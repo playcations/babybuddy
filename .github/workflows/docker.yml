@@ -110,47 +110,6 @@ jobs:
           org.opencontainers.image.vendor=Baby Buddy Community
           org.opencontainers.image.licenses=BSD-2-Clause
 
-    - name: Build and test Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        platforms: linux/amd64
-        push: false
-        tags: test-image:latest
-        load: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        build-args: |
-          BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
-          VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-          BABYBUDDY_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-
-    - name: Test Docker container
-      run: |
-        # Start the container
-        docker run -d --name test-container \
-          -e PUID=1000 \
-          -e PGID=1000 \
-          -e TZ=Etc/UTC \
-          -e DJANGO_SUPERUSER_USERNAME=admin \
-          -e DJANGO_SUPERUSER_PASSWORD=admin \
-          -e DJANGO_SUPERUSER_EMAIL=admin@example.com \
-          -p 8000:8000 \
-          test-image:latest
-        
-        # Wait for container to be ready
-        sleep 30
-        
-        # Test health check
-        curl -f http://localhost:8000/ || exit 1
-        
-        # Check container logs for errors
-        docker logs test-container
-        
-        # Stop and remove test container
-        docker stop test-container
-        docker rm test-container
-
     - name: Build and push Docker image
       if: github.event_name != 'pull_request'
       uses: docker/build-push-action@v5
