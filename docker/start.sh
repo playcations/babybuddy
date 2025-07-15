@@ -34,10 +34,13 @@ fi
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
-# Create superuser if variables are set
+# Create default admin user (LinuxServer compatibility)
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
-    echo "Creating superuser..."
+    echo "Creating custom superuser..."
     python manage.py createsuperuser --noinput --username "$DJANGO_SUPERUSER_USERNAME" --email "${DJANGO_SUPERUSER_EMAIL:-admin@example.com}" || echo "Superuser already exists"
+else
+    echo "Creating default admin user (admin/admin)..."
+    python manage.py createsuperuser --noinput --username "admin" --password "admin" --email "admin@example.com" || echo "Default admin user already exists"
 fi
 
 # Collect static files

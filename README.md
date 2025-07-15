@@ -28,6 +28,60 @@ resets every hour. Login credentials are:
 - Username: `admin`
 - Password: `admin`
 
+## 🐳 Docker
+
+Baby Buddy is available as a Docker container, designed to be a drop-in replacement for the LinuxServer version.
+
+### Quick Start
+
+```bash
+docker run -d \
+  --name=babybuddy \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Etc/UTC \
+  -p 8000:8000 \
+  -v /path/to/config:/config \
+  --restart unless-stopped \
+  ghcr.io/yourusername/babybuddy:latest
+```
+
+### Docker Compose
+
+```yaml
+services:
+  babybuddy:
+    image: ghcr.io/yourusername/babybuddy:latest
+    container_name: babybuddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./config:/config
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUID` | `1000` | User ID for permissions |
+| `PGID` | `1000` | Group ID for permissions |
+| `TZ` | `Etc/UTC` | Timezone setting |
+| `CSRF_TRUSTED_ORIGINS` | - | Comma-separated list of trusted origins |
+| `DJANGO_SUPERUSER_USERNAME` | - | Create admin user on first run |
+| `DJANGO_SUPERUSER_PASSWORD` | - | Admin user password |
+| `DJANGO_SUPERUSER_EMAIL` | - | Admin user email |
+
+### Volumes
+
+- `/config` - Persistent data storage (database, media files)
+
+Default admin credentials are `admin/admin` if superuser environment variables are not set.
+
 ## 📘 Documentation
 
 Visit [https://docs.baby-buddy.net](https://docs.baby-buddy.net) for full documentation.
