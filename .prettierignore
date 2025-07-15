@@ -10,3 +10,4 @@ Dockerfile
 *.md
 *.yml
 *.yaml
+**/fontello/demo.html

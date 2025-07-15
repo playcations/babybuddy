@@ -47,6 +47,9 @@ jobs:
     - name: Build assets
       run: npx gulp build
 
+    - name: Fix fontello formatting
+      run: npx prettier --write babybuddy/static_src/fontello/demo.html || true
+
     - name: Run linting
       run: npx gulp lint
 
