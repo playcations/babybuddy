@@ -20,8 +20,6 @@ class ViewsTestCase(TestCase):
         fake = Faker()
         call_command("migrate", verbosity=0)
 
-        cls.c = HttpClient()
-
         fake_user = fake.simple_profile()
         cls.credentials = {
             "username": fake_user["username"],
@@ -31,7 +29,9 @@ class ViewsTestCase(TestCase):
             is_superuser=True, email="admin@admin.admin", **cls.credentials
         )
 
-        cls.c.login(**cls.credentials)
+    def setUp(self):
+        self.c = HttpClient()
+        self.c.login(**self.credentials)
 
     def test_root_router(self):
         page = self.c.get("/")
