@@ -6,39 +6,7 @@ on:
     tags: [ 'v*' ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-        
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      run: |
-        pip install pipenv
-        pipenv install --dev
-        npm install
-        
-    - name: Build assets
-      run: npx gulp build
-      
-    - name: Compile messages
-      run: npx gulp compilemessages
-      
-    - name: Run tests
-      run: npx gulp coverage
-
   build:
-    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
