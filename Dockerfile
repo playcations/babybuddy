@@ -53,7 +53,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install Node.js dependencies and build assets
 RUN npm install && \
     npx gulp updateglyphs && \
-    npx gulp build
+    npx gulp build && \
+    npx gulp compilemessages
 
 # Create config directory for SQLite and media files (LinuxServer compatibility)
 RUN mkdir -p /config/media && \
