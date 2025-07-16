@@ -112,9 +112,18 @@ TEMPLATES = [
 if os.getenv("DATABASE_URL"):
     DATABASES = {"default": dj_database_url.config()}
 else:
+    # Handle LinuxServer database location for compatibility
+    default_db_path = os.path.join(BASE_DIR, "data/db.sqlite3")
+    if os.path.exists("/config/data/db.sqlite3"):
+        # LinuxServer format (existing installation)
+        default_db_path = "/config/data/db.sqlite3"
+    elif os.path.exists("/app/www/public/data/db.sqlite3"):
+        # LinuxServer linked format
+        default_db_path = "/app/www/public/data/db.sqlite3"
+
     config = {
         "ENGINE": os.getenv("DB_ENGINE") or "django.db.backends.sqlite3",
-        "NAME": os.getenv("DB_NAME") or os.path.join(BASE_DIR, "data/db.sqlite3"),
+        "NAME": os.getenv("DB_NAME") or default_db_path,
     }
     if os.getenv("DB_USER"):
         config["USER"] = os.getenv("DB_USER")

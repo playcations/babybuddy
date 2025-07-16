@@ -64,6 +64,9 @@ RUN \
   rm -rf node_modules && \
   printf "Baby Buddy Community version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version
 
+# Set up PATH to use virtual environment (LinuxServer approach)
+ENV PATH="/lsiopy/bin:$PATH"
+
 # copy local files
 COPY root/ /
 
