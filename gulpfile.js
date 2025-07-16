@@ -431,6 +431,9 @@ gulp.task("watch", watch);
 
 gulp.task("build", gulp.parallel("extras", "scripts", "styles"));
 
+// Redefine coverage to run build and collectstatic first
+gulp.task("coverage", gulp.series("build", "collectstatic", coverage));
+
 gulp.task(
   "updatestatic",
   gulp.series("lint", "clean", "build", "collectstatic"),
