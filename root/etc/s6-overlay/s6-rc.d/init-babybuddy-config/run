@@ -15,7 +15,7 @@ if [[ ! -f "/config/.secretkey" ]]; then
 fi
 
 export \
-    DJANGO_SETTINGS_MODULE="babybuddy.settings.base" \
+    DJANGO_SETTINGS_MODULE="babybuddy.settings.docker" \
     ALLOWED_HOSTS="${ALLOWED_HOSTS:-*}" \
     TIME_ZONE="${TZ:-UTC}" \
     DEBUG="${DEBUG:-False}" \

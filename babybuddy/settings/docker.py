@@ -26,16 +26,8 @@ if os.environ.get('DATABASE_URL'):
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
-    # Check for LinuxServer database location first, then our format 
-    import os.path
-    if os.path.exists('/config/data/db.sqlite3'):
-        # LinuxServer format (existing installation)
-        DATABASE_PATH = '/config/data/db.sqlite3'
-    else:
-        # Our format (new installation)
-        DATABASE_PATH = '/config/db.sqlite3'
-        # Ensure directory exists
-        os.makedirs('/config', exist_ok=True)
+    # LinuxServer approach - use /config/data/ directory
+    DATABASE_PATH = '/config/data/db.sqlite3'
     
     DATABASES = {
         'default': {
@@ -44,12 +36,12 @@ else:
         }
     }
 
-# Static files
-STATIC_ROOT = '/app/static/'
+# Static files (LinuxServer approach)
+STATIC_ROOT = '/app/www/public/static/'
 STATIC_URL = '/static/'
 
-# Media files (LinuxServer compatibility)
-MEDIA_ROOT = '/config/media/'
+# Media files (LinuxServer approach)
+MEDIA_ROOT = '/app/www/public/media/'
 MEDIA_URL = '/media/'
 
 # Cache (optional Redis configuration)
