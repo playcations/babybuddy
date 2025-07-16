@@ -1,102 +1,72 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12-alpine
+FROM ghcr.io/linuxserver/baseimage-alpine-nginx:3.20
 
-# Set version labels
+# set version label
 ARG BUILD_DATE
 ARG VERSION
 ARG BABYBUDDY_VERSION
-LABEL build_version="Custom Baby Buddy version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="Baby Buddy Community"
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=babybuddy.settings.docker \
-    SECRET_KEY="" \
-    ALLOWED_HOSTS="*" \
-    DEBUG=False
+ENV S6_STAGE2_HOOK="/init-hook"
 
-# Install system dependencies
-RUN apk add --no-cache --virtual .build-deps \
-        build-base \
-        jpeg-dev \
-        libffi-dev \
-        libxml2-dev \
-        libxslt-dev \
-        mariadb-dev \
-        postgresql-dev \
-        python3-dev \
-        zlib-dev \
-        nodejs \
-        npm && \
-    apk add --no-cache \
-        jpeg \
-        libffi \
-        libpq \
-        libxml2 \
-        libxslt \
-        mariadb-connector-c \
-        nginx \
-        su-exec \
-        wget
+RUN \
+  echo "**** install build packages ****" && \
+  apk add --no-cache --virtual=build-dependencies \
+    build-base \
+    jpeg-dev \
+    libffi-dev \
+    libxml2-dev \
+    libxslt-dev \
+    mariadb-dev \
+    postgresql-dev \
+    python3-dev \
+    zlib-dev \
+    nodejs \
+    npm && \
+  echo "**** install runtime packages ****" && \
+  apk add --no-cache \
+    jpeg \
+    libffi \
+    libpq \
+    libxml2 \
+    libxslt \
+    mariadb-connector-c \
+    python3 && \
+  echo "**** install babybuddy ****" && \
+  mkdir -p /app/www/public && \
+  echo "**** cleanup ****" && \
+  apk del --purge \
+    build-dependencies && \
+  rm -rf \
+    /tmp/* \
+    $HOME/.cache \
+    $HOME/.cargo
 
-# Create app directory
-WORKDIR /app
+# copy our application files instead of downloading from GitHub
+COPY . /app/www/public/
 
-# Copy application files
-COPY . /app/
+# Install Python requirements using LinuxServer approach
+RUN \
+  cd /app/www/public && \
+  python3 -m venv /lsiopy && \
+  /lsiopy/bin/pip install -U --no-cache-dir \
+    pip \
+    wheel && \
+  /lsiopy/bin/pip install -U --no-cache-dir --find-links https://wheel-index.linuxserver.io/alpine-3.20/ \
+    -r requirements.txt && \
+  /lsiopy/bin/pip install -U --no-cache-dir --find-links https://wheel-index.linuxserver.io/alpine-3.20/ \
+    mysqlclient && \
+  npm install && \
+  npx gulp build && \
+  npx gulp compilemessages && \
+  rm -rf node_modules && \
+  printf "Baby Buddy Community version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# copy local files
+COPY root/ /
 
-# Install Node.js dependencies and build assets
-RUN npm install && \
-    npx gulp updateglyphs && \
-    npx gulp build && \
-    npx gulp compilemessages
-
-# Create config directory for SQLite and media files (LinuxServer compatibility)
-RUN mkdir -p /config/media && \
-    chmod 755 /config
-
-# Create nginx configuration
-RUN mkdir -p /etc/nginx/http.d
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
-
-# No longer using supervisor - using simple shell script approach
-
-# Create startup script
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Clean up build dependencies
-RUN apk del .build-deps && \
-    rm -rf /var/cache/apk/* \
-           /tmp/* \
-           /var/tmp/* \
-           node_modules \
-           ~/.cache
-
-# Create non-root user (will be modified by PUID/PGID in start script)
-RUN addgroup -g 1000 -S babybuddy && \
-    adduser -u 1000 -S babybuddy -G babybuddy
-
-# Set ownership
-RUN chown -R babybuddy:babybuddy /app && \
-    chown -R babybuddy:babybuddy /config
-
-# Keep running as root for nginx startup, will drop privileges for gunicorn using su-exec
-
-# Expose port
+# ports and volumes
 EXPOSE 8000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8000/api/ || exit 1
-
-# Start command
-CMD ["/start.sh"]
-
-# Volume for persistent data (LinuxServer compatibility)
-VOLUME ["/config"]
+VOLUME /config

@@ -1,0 +1,50 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+mkdir -p /config/{data,media}
+rm -rf /app/www/public/{data,media}
+ln -s /config/data /app/www/public/data
+ln -s /config/media /app/www/public/media
+
+cd /app/www/public || exit 1
+
+if [[ ! -f "/config/.secretkey" ]]; then
+    echo "**** No secret key found, generating one ****"
+    /lsiopy/bin/python manage.py shell -c 'from django.core.management import utils; print(utils.get_random_secret_key())' |
+        tr -d '\n' >/config/.secretkey
+fi
+
+export \
+    DJANGO_SETTINGS_MODULE="babybuddy.settings.base" \
+    ALLOWED_HOSTS="${ALLOWED_HOSTS:-*}" \
+    TIME_ZONE="${TZ:-UTC}" \
+    DEBUG="${DEBUG:-False}" \
+    SECRET_KEY="${SECRET_KEY:-$(cat /config/.secretkey)}"
+
+# Run migrations with the virtual environment Python
+/lsiopy/bin/python manage.py migrate --noinput
+/lsiopy/bin/python manage.py createcachetable
+
+# Create default admin user (LinuxServer compatibility)
+if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
+    echo "**** Creating custom superuser ****"
+    /lsiopy/bin/python manage.py createsuperuser --noinput --username "$DJANGO_SUPERUSER_USERNAME" --email "${DJANGO_SUPERUSER_EMAIL:-admin@example.com}" || echo "Superuser already exists"
+else
+    echo "**** Creating default admin user (admin/admin) ****"
+    /lsiopy/bin/python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+    print('Default admin user created')
+else:
+    print('Default admin user already exists')
+" || echo "Admin user creation failed"
+fi
+
+# Collect static files
+/lsiopy/bin/python manage.py collectstatic --noinput
+
+# permissions
+lsiown -R abc:abc \
+    /config
