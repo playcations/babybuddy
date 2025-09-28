@@ -23,6 +23,7 @@ RUN \
     postgresql-dev \
     python3-dev \
     pkgconf \
+    gettext \
     zlib-dev \
     nodejs \
     npm && \
@@ -54,7 +55,7 @@ RUN \
     mysqlclient && \
   npm install && \
   npx gulp build && \
-  npx gulp compilemessages && \
+  BABYBUDDY_USE_PIPENV=0 BABYBUDDY_PYTHON=/lsiopy/bin/python npx gulp compilemessages && \
   rm -rf node_modules && \
   printf "Baby Buddy Community version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup build deps ****" && \

@@ -11,6 +11,9 @@ runs:
     - name: Install Pipenv
       shell: bash
       run: pipx install pipenv
+    - name: Install gettext tools
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y gettext
     - uses: actions/setup-python@v5
       id: setup-python
       with:

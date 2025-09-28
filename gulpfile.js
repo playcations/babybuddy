@@ -15,6 +15,11 @@ import sassGlob from "gulp-sass-glob";
 const es = child_process.execSync;
 const sass = gulpSass(dartSass);
 const spawn = child_process.spawn;
+const pipenvCommand = process.env.BABYBUDDY_PIPENV_COMMAND || "pipenv";
+const usePipenv = !["0", "false"].includes(
+  (process.env.BABYBUDDY_USE_PIPENV || "true").toLowerCase(),
+);
+const fallbackPython = process.env.BABYBUDDY_PYTHON || "python3";
 
 /**
  * Spawns a command for pipenv.
@@ -27,15 +32,27 @@ const spawn = child_process.spawn;
  * @private
  */
 function _runInPipenv(command) {
-  command.unshift("run");
-  command = command.concat(process.argv.splice(3));
+  const pipenvArgs = process.argv.splice(3);
+  if (!usePipenv) {
+    const combined = command.slice().concat(pipenvArgs);
+    const [program, ...args] = combined;
+    const executable = ["python", "python3"].includes(program)
+      ? fallbackPython
+      : program;
+    return _runCommand(executable, args);
+  }
+
+  const finalCommand = ["run", ...command, ...pipenvArgs];
   return new Promise((resolve, reject) => {
-    spawn("pipenv", command, { stdio: "inherit" }).on("exit", function (code) {
-      if (code) {
-        reject();
-      }
-      resolve();
-    });
+    spawn(pipenvCommand, finalCommand, { stdio: "inherit" }).on(
+      "exit",
+      function (code) {
+        if (code) {
+          reject();
+        }
+        resolve();
+      },
+    );
   });
 }
 
@@ -400,8 +417,6 @@ gulp.task("generateschema", () => {
  */
 
 gulp.task("clean", clean);
-
-gulp.task("coverage", coverage);
 
 gulp.task("docs:build", docsBuild);
 
