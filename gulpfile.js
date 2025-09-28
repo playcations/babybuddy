@@ -435,7 +435,10 @@ gulp.task(
 );
 
 // Redefine coverage to run build and collectstatic first
-gulp.task("coverage", gulp.series("build", "collectstatic", coverage));
+gulp.task(
+  "coverage",
+  gulp.series("build", "compilemessages", "collectstatic", coverage),
+);
 
 gulp.task(
   "updatestatic",

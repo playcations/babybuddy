@@ -22,6 +22,7 @@ RUN \
     mariadb-dev \
     postgresql-dev \
     python3-dev \
+    pkgconf \
     zlib-dev \
     nodejs \
     npm && \
@@ -35,14 +36,7 @@ RUN \
     mariadb-connector-c \
     python3 && \
   echo "**** install babybuddy ****" && \
-  mkdir -p /app/www/public && \
-  echo "**** cleanup ****" && \
-  apk del --purge \
-    build-dependencies && \
-  rm -rf \
-    /tmp/* \
-    $HOME/.cache \
-    $HOME/.cargo
+  mkdir -p /app/www/public
 
 # copy our application files instead of downloading from GitHub
 COPY . /app/www/public/
@@ -62,7 +56,13 @@ RUN \
   npx gulp build && \
   npx gulp compilemessages && \
   rm -rf node_modules && \
-  printf "Baby Buddy Community version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version
+  printf "Baby Buddy Community version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
+  echo "**** cleanup build deps ****" && \
+  apk del --purge build-dependencies && \
+  rm -rf \
+    /tmp/* \
+    $HOME/.cache \
+    $HOME/.cargo
 
 # Set up PATH to use virtual environment (LinuxServer approach)
 ENV PATH="/lsiopy/bin:$PATH"
