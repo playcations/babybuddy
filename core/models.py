@@ -247,7 +247,7 @@ class BMI(models.Model):
 
     class Meta:
         default_permissions = ("view", "add", "change", "delete")
-        ordering = ["-date"]
+        ordering = ["-date", "-id"]
         verbose_name = _("BMI")
         verbose_name_plural = _("BMI")
 
@@ -464,7 +464,7 @@ class HeadCircumference(models.Model):
 
     class Meta:
         default_permissions = ("view", "add", "change", "delete")
-        ordering = ["-date"]
+        ordering = ["-date", "-id"]
         verbose_name = _("Head Circumference")
         verbose_name_plural = _("Head Circumference")
 
@@ -494,7 +494,7 @@ class Height(models.Model):
 
     class Meta:
         default_permissions = ("view", "add", "change", "delete")
-        ordering = ["-date"]
+        ordering = ["-date", "-id"]
         verbose_name = _("Height")
         verbose_name_plural = _("Height")
 
@@ -828,7 +828,7 @@ class Weight(models.Model):
 
     class Meta:
         default_permissions = ("view", "add", "change", "delete")
-        ordering = ["-date"]
+        ordering = ["-date", "-id"]
         verbose_name = _("Weight")
         verbose_name_plural = _("Weight")
 
