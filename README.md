@@ -1,5 +1,8 @@
 This is for my own personal modifications. Use them as you see fit.
-
+## Changes Made
+- added medicine
+- Cleaned up the repo so generated files are built in the workflow and not in the repo
+- 
 <img src="babybuddy/static_src/logo/icon.png" height="150" align="left">
 
 # Baby Buddy
