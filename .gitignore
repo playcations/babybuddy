@@ -17,6 +17,9 @@
 # Python files.
 *.pyc
 
+# Django test databases.
+default_*.sqlite3
+
 # App static file directories.
 /*/static
 

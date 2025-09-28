@@ -429,7 +429,10 @@ gulp.task("watch", watch);
  * Gulp compound commands.
  */
 
-gulp.task("build", gulp.parallel("extras", "scripts", "styles"));
+gulp.task(
+  "build",
+  gulp.series("updateglyphs", gulp.parallel("extras", "scripts", "styles")),
+);
 
 // Redefine coverage to run build and collectstatic first
 gulp.task("coverage", gulp.series("build", "collectstatic", coverage));
