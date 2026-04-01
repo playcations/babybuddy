@@ -187,7 +187,13 @@ function extras() {
 function format() {
   return all(
     _runInPipenv(["black", "."]),
-    _runInPipenv(["djlint", "--reformat", "."]),
+    _runInPipenv([
+      "djlint",
+      "--reformat",
+      ".",
+      "--extend-exclude",
+      "babybuddy/static_src/fontello",
+    ]),
     _runCommand("npx", ["prettier", ".", "--write"]),
   );
 }
@@ -198,7 +204,13 @@ function format() {
 function lint() {
   return all(
     _runInPipenv(["black", ".", "--check", "--diff", "--color"]),
-    _runInPipenv(["djlint", "--check", "."]),
+    _runInPipenv([
+      "djlint",
+      "--check",
+      ".",
+      "--extend-exclude",
+      "babybuddy/static_src/fontello",
+    ]),
     _runCommand("npx", ["prettier", ".", "--check"]),
     gulp.src(config.watchConfig.stylesGlob).pipe(
       gStylelintEsm({
