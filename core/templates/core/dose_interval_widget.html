@@ -1,0 +1,187 @@
+{% load i18n %}
+<div class="dose-interval-widget">
+    <label class="form-label">Medicine Interval</label>
+    <!-- Days, hours and minutes inputs -->
+    <div class="interval-input-container">
+        <input type="number"
+               class="form-control interval-days-input"
+               id="{{ widget.attrs.id }}_days"
+               min="0"
+               max="365"
+               value="{{ widget.custom_days|default:'0' }}">
+        <span class="interval-label">days</span>
+        <input type="number"
+               class="form-control interval-hours-input"
+               id="{{ widget.attrs.id }}_hours"
+               min="0"
+               max="23"
+               value="{{ widget.custom_hours|default:'12' }}">
+        <span class="interval-colon">:</span>
+        <input type="number"
+               class="form-control interval-minutes-input"
+               id="{{ widget.attrs.id }}_minutes"
+               min="0"
+               max="59"
+               step="1"
+               value="{{ widget.custom_minutes|default:'0' }}">
+        <span class="interval-label">hours</span>
+    </div>
+    <!-- Hidden inputs for form submission -->
+    <input type="hidden"
+           name="{{ widget.name }}_type"
+           id="{{ widget.attrs.id }}_type"
+           value="custom">
+    <input type="hidden"
+           name="{{ widget.name }}_custom_days"
+           id="{{ widget.attrs.id }}_custom_days"
+           value="0">
+    <input type="hidden"
+           name="{{ widget.name }}_custom_hours"
+           id="{{ widget.attrs.id }}_custom_hours"
+           value="{{ widget.custom_hours }}">
+    <input type="hidden"
+           name="{{ widget.name }}_custom_minutes"
+           id="{{ widget.attrs.id }}_custom_minutes"
+           value="{{ widget.custom_minutes }}">
+</div>
+<script>
+// Function to update interval label based on recurring checkbox
+function updateIntervalLabel() {
+    const recurringCheckbox = document.querySelector('input[name="is_recurring"]');
+    const intervalLabel = document.querySelector('.dose-interval-widget .form-label');
+    
+    if (recurringCheckbox && intervalLabel) {
+        if (recurringCheckbox.checked) {
+            intervalLabel.textContent = 'Dose Interval';
+            // Update help text if present
+            const helpText = intervalLabel.parentElement.querySelector('.help-block, .form-text');
+            if (helpText) {
+                helpText.textContent = 'Time between scheduled doses';
+            }
+        } else {
+            intervalLabel.textContent = 'Safety Window';
+            // Update help text if present
+            const helpText = intervalLabel.parentElement.querySelector('.help-block, .form-text');
+            if (helpText) {
+                helpText.textContent = 'Minimum time between doses for safety';
+            }
+        }
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const widgets = document.querySelectorAll('.dose-interval-widget');
+    
+    widgets.forEach(function(widget) {
+        const hiddenInput = widget.querySelector('input[name$="_type"]');
+        if (hiddenInput) {
+            const widgetName = hiddenInput.name.replace('_type', '');
+            const daysInput = widget.querySelector('.interval-days-input');
+            const hoursInput = widget.querySelector('.interval-hours-input');
+            const minutesInput = widget.querySelector('.interval-minutes-input');
+            
+            function updateHiddenValues() {
+                const days = parseInt(daysInput.value) || 0;
+                const hours = parseInt(hoursInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 0;
+                
+                document.getElementById(widgetName + '_custom_days').value = days;
+                document.getElementById(widgetName + '_custom_hours').value = hours;
+                document.getElementById(widgetName + '_custom_minutes').value = minutes;
+            }
+            
+            if (daysInput && hoursInput && minutesInput) {
+                // Handle days input changes
+                daysInput.addEventListener('change', function(e) {
+                    let value = parseInt(e.target.value);
+                    if (value < 0) value = 0;
+                    if (value > 365) value = 365;
+                    e.target.value = value;
+                    updateHiddenValues();
+                });
+                
+                // Handle hours input changes
+                hoursInput.addEventListener('change', function(e) {
+                    let value = parseInt(e.target.value);
+                    if (value < 0) value = 0;
+                    if (value > 23) value = 23;
+                    e.target.value = value;
+                    updateHiddenValues();
+                });
+                
+                // Handle minutes input changes
+                minutesInput.addEventListener('change', function(e) {
+                    let value = parseInt(e.target.value);
+                    if (value < 0) value = 0;
+                    if (value > 59) value = 59;
+                    e.target.value = value;
+                    updateHiddenValues();
+                });
+                
+                // Also handle input events for real-time updates
+                daysInput.addEventListener('input', updateHiddenValues);
+                hoursInput.addEventListener('input', updateHiddenValues);
+                minutesInput.addEventListener('input', updateHiddenValues);
+                
+                // Initialize hidden values
+                updateHiddenValues();
+            }
+        }
+    });
+    
+    // Set up recurring checkbox listener
+    const recurringCheckbox = document.querySelector('input[name="is_recurring"]');
+    if (recurringCheckbox) {
+        recurringCheckbox.addEventListener('change', updateIntervalLabel);
+        // Initialize label on page load
+        updateIntervalLabel();
+    }
+});
+</script>
+<style>
+.dose-interval-widget {
+    position: relative;
+}
+
+.dose-interval-widget .form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.interval-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.interval-days-input,
+.interval-hours-input,
+.interval-minutes-input {
+    width: 60px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.interval-days-input:focus,
+.interval-hours-input:focus,
+.interval-minutes-input:focus {
+    border-color: #37abe9;
+    box-shadow: 0 0 0 0.25rem rgba(55, 171, 233, 0.25);
+}
+
+.interval-colon {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: inherit;
+    margin: 0 0.1rem;
+}
+
+.interval-label {
+    color: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-right: 0.25rem;
+}
+</style>

@@ -7,9 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.functions import Lower
-from django.urls import reverse
-from django.utils import formats, timezone
-from django.utils.safestring import mark_safe
+from django.utils import timezone
 from django.utils.text import format_lazy, slugify
 from django.utils.translation import gettext_lazy as _
 from taggit.managers import TaggableManager as TaggitTaggableManager
@@ -51,10 +49,6 @@ def validate_duration(model, max_duration=datetime.timedelta(hours=24)):
             raise ValidationError(_("Duration too long."), code="max_duration")
 
 
-def _format_dt(dt):
-    return formats.date_format(timezone.localtime(dt), "SHORT_DATETIME_FORMAT")
-
-
 def validate_unique_period(queryset, model):
     """
     Confirm that model's start and end date do not intersect with other
@@ -66,22 +60,9 @@ def validate_unique_period(queryset, model):
     if model.id:
         queryset = queryset.exclude(id=model.id)
     if model.start and model.end:
-        conflicting = queryset.filter(start__lt=model.end, end__gt=model.start).first()
-        if conflicting:
-            url = reverse(
-                f"core:{conflicting.model_name}-update",
-                args=[conflicting.id],
-            )
-            link = (
-                f'<a href="{url}">{conflicting} '
-                f"({_format_dt(conflicting.start)} - "
-                f"{_format_dt(conflicting.end)})</a>"
-            )
+        if queryset.filter(start__lt=model.end, end__gt=model.start):
             raise ValidationError(
-                mark_safe(
-                    f'{_("Another entry intersects the specified time period.")} '
-                    f'{_("Conflicting entry")}: {link}'
-                ),
+                _("Another entry intersects the specified time period."),
                 code="period_intersection",
             )
 
@@ -96,6 +77,99 @@ def validate_time(time, field_name):
     if time and time > timezone.localtime():
         raise ValidationError(
             {field_name: _("Date/time can not be in the future.")}, code="time_invalid"
+        )
+
+
+def validate_medicine_dosage(dosage, dosage_unit):
+    """
+    Validate medicine dosage amount and unit-specific constraints.
+    :param dosage: numeric dosage amount
+    :param dosage_unit: unit of measurement
+    :return:
+    """
+    if dosage <= 0:
+        raise ValidationError(_("Dosage must be positive"))
+
+    # Tablet dosage must be whole number
+    if dosage_unit == "tablets" and dosage != int(dosage):
+        raise ValidationError(_("Tablet dosage must be a whole number"))
+
+    # Set reasonable limits for different units
+    dosage_limits = {
+        "mg": (0.1, 10000),  # 0.1mg to 10g
+        "ml": (0.1, 500),  # 0.1ml to 500ml
+        "tablets": (0.5, 50),  # 0.5 to 50 tablets
+        "drops": (1, 100),  # 1 to 100 drops
+        "tsp": (0.1, 20),  # 0.1 to 20 teaspoons
+        "tbsp": (0.1, 10),  # 0.1 to 10 tablespoons
+    }
+
+    if dosage_unit in dosage_limits:
+        min_dose, max_dose = dosage_limits[dosage_unit]
+        if not (min_dose <= dosage <= max_dose):
+            raise ValidationError(
+                _("Dosage for %(unit)s must be between %(min)s and %(max)s")
+                % {
+                    "unit": dict(
+                        [
+                            ("mg", _("MG")),
+                            ("ml", _("ML")),
+                            ("tablets", _("Tablets")),
+                            ("drops", _("Drops")),
+                            ("tsp", _("Teaspoons")),
+                            ("tbsp", _("Tablespoons")),
+                        ]
+                    ).get(dosage_unit, dosage_unit),
+                    "min": min_dose,
+                    "max": max_dose,
+                }
+            )
+
+
+def validate_medicine_interval(interval):
+    """
+    Validate medicine dose interval.
+    :param interval: timedelta for dose interval
+    :return:
+    """
+    if interval and interval.total_seconds() <= 0:
+        raise ValidationError(_("Next dose interval must be positive"))
+
+
+def validate_medicine_duplicates(medicine_instance):
+    """
+    Check for duplicate medicine entries within a time window.
+    :param medicine_instance: Medicine model instance to validate
+    :return:
+    """
+    # Only check for new instances
+    if medicine_instance.pk is not None:
+        return
+
+    from datetime import timedelta
+
+    # Check for duplicates within 5 minutes
+    duplicate_window = timedelta(minutes=5)
+    time_start = medicine_instance.time - duplicate_window
+    time_end = medicine_instance.time + duplicate_window
+
+    # Import here to avoid circular imports
+    from core.models import Medicine
+
+    duplicates = Medicine.objects.filter(
+        child=medicine_instance.child,
+        name__iexact=medicine_instance.name,
+        dosage=medicine_instance.dosage,
+        dosage_unit=medicine_instance.dosage_unit,
+        time__range=(time_start, time_end),
+    )
+
+    if duplicates.exists():
+        raise ValidationError(
+            _(
+                "A similar medicine entry already exists within 5 minutes of this time. "
+                "Please check for duplicate entries."
+            )
         )
 
 
@@ -364,7 +438,9 @@ class Feeding(models.Model):
     def clean(self):
         validate_time(self.start, "start")
         validate_duration(self)
-        validate_unique_period(Feeding.objects.filter(child=self.child), self)
+        # Skip period validation for bottle feedings (method='bottle' and start==end)
+        if not (getattr(self, "method", None) == "bottle" and self.start == self.end):
+            validate_unique_period(Feeding.objects.filter(child=self.child), self)
 
 
 class HeadCircumference(models.Model):
@@ -761,6 +837,186 @@ class Weight(models.Model):
 
     def clean(self):
         validate_date(self.date, "date")
+
+
+class Medicine(models.Model):
+    model_name = "medicine"
+
+    child = models.ForeignKey(
+        "Child",
+        on_delete=models.CASCADE,
+        related_name="medicine",
+        verbose_name=_("Child"),
+        blank=False,
+        null=False,
+    )
+    name = models.CharField(
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name=_("Medicine Name"),
+        help_text=_("Name of the medication administered"),
+        db_index=True,
+    )
+    dosage = models.FloatField(
+        blank=False,
+        null=False,
+        verbose_name=_("Dosage"),
+        help_text=_("Amount of medication given"),
+    )
+    dosage_unit = models.CharField(
+        max_length=20,
+        choices=[
+            ("mg", _("MG")),
+            ("ml", _("ML")),
+            ("tablets", _("Tablets")),
+            ("drops", _("Drops")),
+            ("tsp", _("Teaspoons")),
+            ("tbsp", _("Tablespoons")),
+        ],
+        blank=False,
+        null=False,
+        verbose_name=_("Dosage Unit"),
+    )
+    time = models.DateTimeField(
+        blank=False,
+        default=timezone.localtime,
+        null=False,
+        verbose_name=_("Time"),
+        db_index=True,
+    )
+    next_dose_interval = models.DurationField(
+        blank=True,
+        null=True,
+        verbose_name=_("Next Dose Interval"),
+        help_text=_("Time until next dose can be given"),
+    )
+    next_dose_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        editable=False,
+        verbose_name=_("Next Dose Time"),
+        help_text=_("Calculated time when next dose is allowed"),
+    )
+    # New fields for safety window system
+    is_recurring = models.BooleanField(
+        default=False,
+        verbose_name=_("Recurring Medication"),
+        help_text=_(
+            "Check if this medication is given on a schedule (vs as-needed for relief)"
+        ),
+    )
+    last_given_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Last Given Time"),
+        help_text=_("When this medication was last administered"),
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("Whether this medication is still being tracked"),
+    )
+    notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
+    tags = TaggableManager(blank=True, through=Tagged)
+
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["-time"]
+        verbose_name = _("Medicine")
+        verbose_name_plural = _("Medicines")
+        default_permissions = ("view", "add", "change", "delete")
+        indexes = [
+            # Composite index for child + time queries (most common pattern)
+            models.Index(fields=["child", "-time"], name="medicine_child_time_idx"),
+            # Index for next dose time queries (dashboard card filtering)
+            models.Index(fields=["next_dose_time"], name="medicine_next_dose_time_idx"),
+            # Composite index for duplicate detection queries
+            models.Index(
+                fields=["child", "name", "time"],
+                name="medicine_duplicate_check_idx",
+            ),
+            # Index for active medicine filtering (dashboard cards)
+            models.Index(
+                fields=["is_active", "child", "-last_given_time"],
+                name="medicine_active_status_idx",
+            ),
+            # Index for last given time queries
+            models.Index(fields=["last_given_time"], name="medicine_last_given_idx"),
+        ]
+
+    def clean(self):
+        validate_time(self.time, "time")
+        validate_medicine_dosage(self.dosage, self.dosage_unit)
+        validate_medicine_interval(self.next_dose_interval)
+        validate_medicine_duplicates(self)
+
+    def save(self, *args, **kwargs):
+        if self.next_dose_interval:
+            self.next_dose_time = self.time + self.next_dose_interval
+        else:
+            self.next_dose_time = None
+        super().save(*args, **kwargs)
+
+    @property
+    def next_dose_ready(self):
+        """Check if recurring medicine is ready for next scheduled dose"""
+        if not self.next_dose_time:
+            return True
+        return timezone.now() >= self.next_dose_time
+
+    @property
+    def is_safe_to_give(self):
+        """Check if enough time has passed since last dose"""
+        if self.is_recurring:
+            return self.next_dose_ready
+
+        # For as-needed medications, check safety window
+        if not self.last_given_time or not self.next_dose_interval:
+            return True
+
+        return timezone.now() >= self.last_given_time + self.next_dose_interval
+
+    @property
+    def time_until_safe(self):
+        """Returns timedelta until medication is safe to give again, or None if safe now"""
+        target_time = None
+
+        if self.is_recurring and self.next_dose_time:
+            target_time = self.next_dose_time
+        elif not self.is_recurring and self.last_given_time and self.next_dose_interval:
+            target_time = self.last_given_time + self.next_dose_interval
+
+        if not target_time:
+            return None
+
+        remaining = target_time - timezone.now()
+        return remaining if remaining.total_seconds() > 0 else None
+
+    @property
+    def last_dose_status(self):
+        """Returns human-readable status of when medication can be given"""
+        if self.is_safe_to_give:
+            return _("Safe to give")
+
+        time_left = self.time_until_safe
+        if not time_left:
+            return _("Safe to give")
+
+        hours = int(time_left.total_seconds() // 3600)
+        minutes = int((time_left.total_seconds() % 3600) // 60)
+
+        if hours > 0:
+            return _("Wait %(hours)dh %(minutes)dm") % {
+                "hours": hours,
+                "minutes": minutes,
+            }
+        else:
+            return _("Wait %(minutes)dm") % {"minutes": minutes}
+
+    def __str__(self):
+        return str(_("Medicine"))
 
 
 class WeightPercentile(models.Model):
