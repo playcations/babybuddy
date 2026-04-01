@@ -1,6 +1,6 @@
-#!/usr/bin/with-contenv sh
-# shellcheck shell=sh
-set -eu
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -euo pipefail
 
 # Ensure persistent data directories exist and are linked
 mkdir -p /config/data /config/media
@@ -10,7 +10,7 @@ ln -sfn /config/media /app/www/public/media
 
 cd /app/www/public || exit 1
 
-if [ ! -f "/config/.secretkey" ]; then
+if [[ ! -f "/config/.secretkey" ]]; then
     echo "**** No secret key found, generating one ****"
     python3 manage.py shell -c 'from django.core.management import utils; print(utils.get_random_secret_key())' |
         tr -d '\n' >/config/.secretkey
