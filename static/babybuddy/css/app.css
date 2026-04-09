@@ -12106,17 +12106,22 @@ textarea.form-control-lg {
   color: #fff;
 }
 
-.card-diaperchange {
+.card-diaperchange,
+.card-medicine {
   border-color: #a72431;
 }
-.card-diaperchange .card-header, .card-diaperchange .card-header a {
+.card-diaperchange .card-header, .card-diaperchange .card-header a,
+.card-medicine .card-header,
+.card-medicine .card-header a {
   background-color: #a72431;
   color: #f8f9fa;
 }
-.card-diaperchange .card-body {
+.card-diaperchange .card-body,
+.card-medicine .card-body {
   color: #a72431;
 }
-.card-diaperchange .progress {
+.card-diaperchange .progress,
+.card-medicine .progress {
   height: 2rem;
 }
 
@@ -12179,6 +12184,40 @@ textarea.form-control-lg {
   color: #239556;
 }
 
+.card-medicine-status {
+  border-color: #37abe9;
+}
+.card-medicine-status .card-header, .card-medicine-status .card-header a {
+  background-color: #37abe9;
+  color: #f8f9fa;
+}
+.card-medicine-status .medicine-status-item:last-child {
+  border-bottom: none !important;
+}
+.card-medicine-status .medicine-status-item .medicine-name {
+  font-weight: 600;
+  color: #37abe9;
+}
+.card-medicine-status .medicine-status-item .medicine-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+}
+.card-medicine-status .medicine-status-item .medicine-actions .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+@media (max-width: 576px) {
+  .card-medicine-status .medicine-status-item .medicine-actions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+.card-medicine-status .medicine-status-item .badge {
+  font-size: 0.75rem;
+}
+
 .child-actions {
   flex-wrap: wrap;
 }
@@ -12189,8 +12228,8 @@ textarea.form-control-lg {
 
 @font-face {
   font-family: "babybuddy";
-  src: url("../font/babybuddy.eot?67957580");
-  src: url("../font/babybuddy.eot?67957580#iefix") format("embedded-opentype"), url("../font/babybuddy.woff2?67957580") format("woff2"), url("../font/babybuddy.woff?67957580") format("woff"), url("../font/babybuddy.ttf?67957580") format("truetype"), url("../font/babybuddy.svg?67957580#babybuddy") format("svg");
+  src: url("../font/babybuddy.eot?7476955");
+  src: url("../font/babybuddy.eot?7476955#iefix") format("embedded-opentype"), url("../font/babybuddy.woff2?7476955") format("woff2"), url("../font/babybuddy.woff?7476955") format("woff"), url("../font/babybuddy.ttf?7476955") format("truetype"), url("../font/babybuddy.svg?7476955#babybuddy") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -12200,7 +12239,7 @@ textarea.form-control-lg {
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'babybuddy';
-    src: url('../font/babybuddy.svg?67957580#babybuddy') format('svg');
+    src: url('../font/babybuddy.svg?7476955#babybuddy') format('svg');
   }
 }
 */
@@ -12307,6 +12346,9 @@ textarea.form-control-lg {
 .icon-dashboard:before {
   content: "\f0e4";
 } /* '' */
+.icon-medicine:before {
+  content: "\f0fa";
+} /* '' */
 .icon-angle-double-left:before {
   content: "\f100";
 } /* '' */
