@@ -58,6 +58,12 @@
             {% trans "Bottle Feeding" %}
         </a>
     {% endif %}
+    {% if perms.core.add_medicine %}
+        <a class="dropdown-item p-2" href="{% url 'core:medicine-add' %}">
+            <i class="icon-medicine" aria-hidden="true"></i>
+            {% trans "Medicine" %}
+        </a>
+    {% endif %}
     {% if perms.core.add_pumping %}
         <a class="dropdown-item p-2" href="{% url 'core:pumping-add' %}">
             <i class="icon-pumping" aria-hidden="true"></i>
@@ -261,6 +267,18 @@
 <a class="dropdown-item ps-5{% if request.path == '/feedings/bottle/add/' %} active{% endif %}"
    href="{% url 'core:bottle-feeding-add' %}"><i class="icon-add" aria-hidden="true"></i>
 {% trans "Bottle Feeding" %}
+</a>
+{% endif %}
+{% if perms.core.view_medicine %}
+<a class="dropdown-item{% if request.path == '/medicine/' %} active{% endif %}"
+   href="{% url 'core:medicine-list' %}"><i class="icon-medicine" aria-hidden="true"></i>
+{% trans "Medicine" %}
+</a>
+{% endif %}
+{% if perms.core.add_medicine %}
+<a class="dropdown-item ps-5{% if request.path == '/medicine/add/' %} active{% endif %}"
+   href="{% url 'core:medicine-add' %}"><i class="icon-add" aria-hidden="true"></i>
+{% trans "Medicine" %}
 </a>
 {% endif %}
 {% if perms.core.view_pumping %}

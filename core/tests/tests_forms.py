@@ -300,6 +300,31 @@ class FeedingFormsTestCase(FormsTestCaseBase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
 
+    def test_bottle_feeding_add_end_equals_start(self):
+        # Ensure no existing feedings interfere with the test.
+        models.Feeding.objects.all().delete()
+
+        start_time = timezone.localtime() - timezone.timedelta(minutes=10)
+        params = {
+            "child": self.child.id,
+            "start": self.localtime_string(start_time),
+            "type": "formula",  # Or any type, doesn't matter for this test
+            "method": "bottle",  # This is crucial for the BottleFeedingForm
+            "amount": 100,
+        }
+
+        # Simulate POST request to the dedicated bottle feeding add page
+        page = self.c.post("/feedings/bottle/add/", params, follow=True)
+
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
+
+        # Retrieve the newly created feeding object
+        new_feeding = models.Feeding.objects.first()
+
+        # Assert that end time equals start time
+        self.assertEqual(new_feeding.start, new_feeding.end)
+
     def test_edit(self):
         end = timezone.localtime()
         start = end - timezone.timedelta(minutes=30)
@@ -937,3 +962,151 @@ class WeightFormsTestCase(FormsTestCaseBase):
         page = self.c.post("/weight/{}/delete/".format(self.weight.id), follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Weight entry deleted")
+
+
+class MedicineFormsTestCase(FormsTestCaseBase):
+    @classmethod
+    def setUpClass(cls):
+        super(MedicineFormsTestCase, cls).setUpClass()
+        cls.medicine = models.Medicine.objects.create(
+            child=cls.child,
+            name="Tylenol",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=timezone.localtime() - timezone.timedelta(hours=2),
+            next_dose_interval=timezone.timedelta(hours=4),
+            notes="Test medicine",
+        )
+
+    def test_add(self):
+        params = {
+            "child": self.child.id,
+            "name": "Ibuprofen",
+            "dosage": "2.5",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(),
+            "next_dose_interval": "4",
+            "notes": "New medicine entry",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_add_without_interval(self):
+        params = {
+            "child": self.child.id,
+            "name": "Vitamin D",
+            "dosage": "1",
+            "dosage_unit": "drops",
+            "time": self.localtime_string(),
+            "notes": "Daily vitamin",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_add_with_tags(self):
+        params = {
+            "child": self.child.id,
+            "name": "Acetaminophen",
+            "dosage": "3.0",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(),
+            "next_dose_interval": "6",
+            "tags": "fever,pain",
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_edit(self):
+        params = {
+            "child": self.medicine.child.id,
+            "name": self.medicine.name,
+            "dosage": self.medicine.dosage + 1.0,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "next_dose_interval": "8",
+            "notes": "Updated medicine entry",
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertEqual(self.medicine.dosage, params["dosage"])
+        self.assertEqual(self.medicine.notes, params["notes"])
+        self.assertContains(
+            page, "Medicine entry for {} updated".format(str(self.medicine.child))
+        )
+
+    def test_edit_change_interval(self):
+        params = {
+            "child": self.medicine.child.id,
+            "name": self.medicine.name,
+            "dosage": self.medicine.dosage,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "next_dose_interval": "12",
+            "notes": self.medicine.notes,
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertContains(
+            page, "Medicine entry for {} updated".format(str(self.medicine.child))
+        )
+
+    def test_edit_remove_interval(self):
+        params = {
+            "child": self.medicine.child.id,
+            "name": self.medicine.name,
+            "dosage": self.medicine.dosage,
+            "dosage_unit": self.medicine.dosage_unit,
+            "time": self.localtime_string(self.medicine.time),
+            "notes": self.medicine.notes,
+        }
+        page = self.c.post(
+            "/medicine/{}/".format(self.medicine.id), params, follow=True
+        )
+        self.assertEqual(page.status_code, 200)
+        self.medicine.refresh_from_db()
+        self.assertIsNone(self.medicine.next_dose_interval)
+
+    def test_delete(self):
+        page = self.c.post("/medicine/{}/delete/".format(self.medicine.id), follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry deleted")
+
+    def test_form_without_dosage(self):
+        # Dosage is now optional — form should be valid without it
+        params = {
+            "child": self.child.id,
+            "name": "Vitamin D",
+            "time": self.localtime_string(),
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+
+    def test_form_validation_future_time(self):
+        future_time = timezone.localtime() + timezone.timedelta(hours=1)
+        params = {
+            "child": self.child.id,
+            "name": "Test Medicine",
+            "dosage": "5.0",
+            "dosage_unit": "ml",
+            "time": self.localtime_string(future_time),
+        }
+
+        page = self.c.post("/medicine/add/", params, follow=True)
+        self.assertEqual(page.status_code, 200)
+        self.assertFormError(
+            page.context["form"], "time", "Date/time can not be in the future."
+        )

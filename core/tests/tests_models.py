@@ -398,3 +398,58 @@ class WeightTestCase(TestCase):
         self.assertEqual(self.weight, models.Weight.objects.first())
         self.assertEqual(str(self.weight), "Weight")
         self.assertEqual(self.weight.weight, 23)
+
+
+class MedicineTestCase(TestCase):
+    def setUp(self):
+        call_command("migrate", verbosity=0)
+        self.child = models.Child.objects.create(
+            first_name="First", last_name="Last", birth_date=timezone.localdate()
+        )
+        self.medicine = models.Medicine.objects.create(
+            child=self.child,
+            name="Tylenol",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=timezone.localtime() - timezone.timedelta(hours=1),
+            next_dose_interval=timezone.timedelta(hours=4),
+        )
+
+    def test_medicine_create(self):
+        self.assertEqual(self.medicine, models.Medicine.objects.first())
+        self.assertEqual(str(self.medicine), "Medicine")
+        self.assertEqual(self.medicine.name, "Tylenol")
+        self.assertEqual(self.medicine.dosage, 5.0)
+        self.assertEqual(self.medicine.dosage_unit, "ml")
+
+    def test_medicine_with_interval(self):
+        self.assertEqual(self.medicine.next_dose_interval, timezone.timedelta(hours=4))
+
+    def test_medicine_without_dosage(self):
+        # Dosage is optional
+        medicine = models.Medicine.objects.create(
+            child=self.child,
+            name="Vitamin D",
+            time=timezone.localtime(),
+        )
+        self.assertIsNone(medicine.dosage)
+        self.assertEqual(medicine.dosage_unit, "")
+
+    def test_medicine_with_tags(self):
+        self.medicine.tags.add("fever", "morning")
+        self.assertEqual(self.medicine.tags.count(), 2)
+        self.assertTrue(self.medicine.tags.filter(name="fever").exists())
+
+    def test_medicine_validation_future_time(self):
+        from django.core.exceptions import ValidationError
+
+        future_time = timezone.localtime() + timezone.timedelta(hours=1)
+        medicine = models.Medicine(
+            child=self.child,
+            name="Future Medicine",
+            dosage=5.0,
+            dosage_unit="ml",
+            time=future_time,
+        )
+        with self.assertRaises(ValidationError):
+            medicine.full_clean()

@@ -38,6 +38,10 @@
                class="list-group-item list-group-item-action">{% trans "WHO Height Percentiles for Boys in cm" %}</a>
             <a href="{% url 'reports:report-height-change-child-girl' object.slug %}"
                class="list-group-item list-group-item-action">{% trans "WHO Height Percentiles for Girls in cm" %}</a>
+            <a href="{% url 'reports:report-medicine-frequency-child' object.slug %}"
+               class="list-group-item list-group-item-action">{% trans "Medicine Frequency" %}</a>
+            <a href="{% url 'reports:report-medicine-intervals-child' object.slug %}"
+               class="list-group-item list-group-item-action">{% trans "Medicine Intervals" %}</a>
             <a href="{% url 'reports:report-pumping-amounts-child' object.slug %}"
                class="list-group-item list-group-item-action">{% trans "Pumping Amounts" %}</a>
             <a href="{% url 'reports:report-sleep-pattern-child' object.slug %}"
