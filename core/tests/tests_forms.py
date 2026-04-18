@@ -964,7 +964,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "notes": "New medicine entry",
         }
 
-        page = self.c.post("/medicine/add/", params, follow=True)
+        page = self.c.post("/medication/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(
             page, "Medication entry for {} added".format(str(self.child))
@@ -980,7 +980,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "notes": "Daily vitamin",
         }
 
-        page = self.c.post("/medicine/add/", params, follow=True)
+        page = self.c.post("/medication/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(
             page, "Medication entry for {} added".format(str(self.child))
@@ -997,7 +997,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "tags": "fever,pain",
         }
 
-        page = self.c.post("/medicine/add/", params, follow=True)
+        page = self.c.post("/medication/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(
             page, "Medication entry for {} added".format(str(self.child))
@@ -1014,7 +1014,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "notes": "Updated medicine entry",
         }
         page = self.c.post(
-            "/medicine/{}/".format(self.medicine.id), params, follow=True
+            "/medication/{}/".format(self.medicine.id), params, follow=True
         )
         self.assertEqual(page.status_code, 200)
         self.medicine.refresh_from_db()
@@ -1035,7 +1035,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "notes": self.medicine.notes,
         }
         page = self.c.post(
-            "/medicine/{}/".format(self.medicine.id), params, follow=True
+            "/medication/{}/".format(self.medicine.id), params, follow=True
         )
         self.assertEqual(page.status_code, 200)
         self.medicine.refresh_from_db()
@@ -1053,14 +1053,16 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "notes": self.medicine.notes,
         }
         page = self.c.post(
-            "/medicine/{}/".format(self.medicine.id), params, follow=True
+            "/medication/{}/".format(self.medicine.id), params, follow=True
         )
         self.assertEqual(page.status_code, 200)
         self.medicine.refresh_from_db()
         self.assertIsNone(self.medicine.next_dose_interval)
 
     def test_delete(self):
-        page = self.c.post("/medicine/{}/delete/".format(self.medicine.id), follow=True)
+        page = self.c.post(
+            "/medication/{}/delete/".format(self.medicine.id), follow=True
+        )
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Medication entry deleted")
 
@@ -1072,7 +1074,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "time": self.localtime_string(),
         }
 
-        page = self.c.post("/medicine/add/", params, follow=True)
+        page = self.c.post("/medication/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertContains(
             page, "Medication entry for {} added".format(str(self.child))
@@ -1088,7 +1090,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
             "time": self.localtime_string(future_time),
         }
 
-        page = self.c.post("/medicine/add/", params, follow=True)
+        page = self.c.post("/medication/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
         self.assertFormError(
             page.context["form"], "time", "Date/time can not be in the future."

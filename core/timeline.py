@@ -232,7 +232,7 @@ def _add_medicine(min_date, max_date, events, child):
             )
         if instance.notes:
             details.append(instance.notes)
-        edit_link = reverse("core:medicine-update", args=[instance.id])
+        edit_link = reverse("core:medication-update", args=[instance.id])
 
         events.append(
             {

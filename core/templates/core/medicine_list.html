@@ -10,7 +10,7 @@
     <h1>
         {% trans "Medication" %}
         {% if perms.core.add_medicine %}
-            <a href="{% url 'core:medicine-add' %}" class="btn btn-sm btn-success">
+            <a href="{% url 'core:medication-add' %}" class="btn btn-sm btn-success">
                 <i class="icon-medicine" aria-hidden="true"></i> {% trans "Add Medication" %}
             </a>
         {% endif %}
@@ -39,13 +39,13 @@
                                  role="group"
                                  aria-label="{% trans "Actions" %}">
                                 {% if perms.core.change_medicine %}
-                                    <a href="{% url 'core:medicine-update' medicine.id %}"
+                                    <a href="{% url 'core:medication-update' medicine.id %}"
                                        class="btn btn-primary">
                                         <i class="icon-update" aria-hidden="true"></i>
                                     </a>
                                 {% endif %}
                                 {% if perms.core.delete_medicine %}
-                                    <a href="{% url 'core:medicine-delete' medicine.id %}"
+                                    <a href="{% url 'core:medication-delete' medicine.id %}"
                                        class="btn btn-danger">
                                         <i class="icon-delete" aria-hidden="true"></i>
                                     </a>

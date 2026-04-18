@@ -284,20 +284,20 @@ class MedicineAdd(CoreAddView):
     model = models.Medicine
     permission_required = ("core.add_medicine",)
     form_class = forms.MedicineForm
-    success_url = reverse_lazy("core:medicine-list")
+    success_url = reverse_lazy("core:medication-list")
 
 
 class MedicineUpdate(CoreUpdateView):
     model = models.Medicine
     permission_required = ("core.change_medicine",)
     form_class = forms.MedicineForm
-    success_url = reverse_lazy("core:medicine-list")
+    success_url = reverse_lazy("core:medication-list")
 
 
 class MedicineDelete(CoreDeleteView):
     model = models.Medicine
     permission_required = ("core.delete_medicine",)
-    success_url = reverse_lazy("core:medicine-list")
+    success_url = reverse_lazy("core:medication-list")
 
 
 class NoteList(PermissionRequiredMixin, BabyBuddyPaginatedView, BabyBuddyFilterView):

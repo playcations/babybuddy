@@ -103,13 +103,15 @@ urlpatterns = [
     path("height/add/", views.HeightAdd.as_view(), name="height-add"),
     path("height/<int:pk>/", views.HeightUpdate.as_view(), name="height-update"),
     path("height/<int:pk>/delete/", views.HeightDelete.as_view(), name="height-delete"),
-    path("medicine/", views.MedicineList.as_view(), name="medicine-list"),
-    path("medicine/add/", views.MedicineAdd.as_view(), name="medicine-add"),
-    path("medicine/<int:pk>/", views.MedicineUpdate.as_view(), name="medicine-update"),
+    path("medication/", views.MedicineList.as_view(), name="medication-list"),
+    path("medication/add/", views.MedicineAdd.as_view(), name="medication-add"),
     path(
-        "medicine/<int:pk>/delete/",
+        "medication/<int:pk>/", views.MedicineUpdate.as_view(), name="medication-update"
+    ),
+    path(
+        "medication/<int:pk>/delete/",
         views.MedicineDelete.as_view(),
-        name="medicine-delete",
+        name="medication-delete",
     ),
     path(
         "head-circumference/",

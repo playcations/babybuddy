@@ -175,15 +175,15 @@ class ViewsTestCase(TestCase):
         self.assertEqual(page.status_code, 200)
 
     def test_medicine_views(self):
-        page = self.c.get("/medicine/")
+        page = self.c.get("/medication/")
         self.assertEqual(page.status_code, 200)
-        page = self.c.get("/medicine/add/")
+        page = self.c.get("/medication/add/")
         self.assertEqual(page.status_code, 200)
 
         entry = models.Medicine.objects.first()
-        page = self.c.get("/medicine/{}/".format(entry.id))
+        page = self.c.get("/medication/{}/".format(entry.id))
         self.assertEqual(page.status_code, 200)
-        page = self.c.get("/medicine/{}/delete/".format(entry.id))
+        page = self.c.get("/medication/{}/delete/".format(entry.id))
         self.assertEqual(page.status_code, 200)
 
     def test_timer_views(self):

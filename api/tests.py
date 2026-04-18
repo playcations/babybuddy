@@ -474,7 +474,7 @@ class HeightAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
 
 
 class MedicineAPITestCase(TestBase.BabyBuddyAPITestCaseBase):
-    endpoint = reverse("api:medicine-list")
+    endpoint = reverse("api:medication-list")
     model = models.Medicine
 
     def test_delete(self):
