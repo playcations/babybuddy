@@ -1,0 +1,81 @@
+{% load i18n humanize duration %}
+{% if medicine_status and not empty %}
+    <div class="card card-dashboard card-medicine-status">
+        <div class="card-header">
+            <i class="icon-medicine" aria-hidden="true"></i>
+            {% trans "Medication Status" %}
+            <small class="text-muted float-end">{% trans "Last 48 hours" %}</small>
+        </div>
+        <div class="card-body">
+            {% for item in medicine_status %}
+                <div class="medicine-status-item {% if not forloop.last %}border-bottom{% endif %} pb-3 {% if not forloop.first %}pt-3{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="medicine-info flex-grow-1">
+                            <h6 class="medicine-name mb-1">{{ item.medicine.name }}</h6>
+                            <div class="medicine-details">
+                                <small class="text-muted">
+                                    {% if item.medicine.dosage %}
+                                        {{ item.medicine.dosage }} {{ item.medicine.get_dosage_unit_display }}
+                                        &bull;
+                                    {% endif %}
+                                    {% trans "Last given" %}: {{ item.last_given_display|naturaltime }}
+                                </small>
+                            </div>
+                            <div class="medicine-status mt-1">
+                                {% if item.is_safe %}
+                                    <span class="badge bg-success">{{ item.status_text }}</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{ item.status_text }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="medicine-actions ms-3">
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm repeat-dose-btn"
+                                    data-medicine-id="{{ item.medicine.id }}"
+                                    data-medicine-name="{{ item.medicine.name }}"
+                                    data-url="{% url 'core:medication-repeat-dose' item.medicine.id %}"
+                                    title="{% trans 'Repeat dose' %}">
+                                <i class="icon-refresh"></i>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm remove-medicine-btn"
+                                    data-medicine-id="{{ item.medicine.id }}"
+                                    data-medicine-name="{{ item.medicine.name }}"
+                                    data-url="{% url 'core:medication-remove-active' item.medicine.id %}"
+                                    title="{% trans 'Remove from list' %}">
+                                <i class="icon-delete"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'core:medication-list' %}"
+                   class="btn btn-outline-primary btn-sm">{% trans "View all" %}</a>
+                <a href="{% url 'core:medication-add' %}" class="btn btn-primary btn-sm">
+                    <i class="icon-add" aria-hidden="true"></i>
+                    {% trans "Add medication" %}
+                </a>
+            </div>
+        </div>
+    </div>
+{% elif empty and hide_empty %}
+    <!-- Hide empty card -->
+{% else %}
+    <div class="card card-dashboard card-medicine-status">
+        <div class="card-header">
+            <i class="icon-medicine" aria-hidden="true"></i>
+            {% trans "Medication Status" %}
+        </div>
+        <div class="card-body text-center text-muted">
+            <p>{% trans "No recent medications" %}</p>
+            <a href="{% url 'core:medication-add' %}" class="btn btn-primary btn-sm">
+                <i class="icon-add" aria-hidden="true"></i>
+                {% trans "Add medication" %}
+            </a>
+        </div>
+    </div>
+{% endif %}

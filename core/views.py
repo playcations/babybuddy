@@ -4,7 +4,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
 from django.db.models.functions import Lower
 from django.forms import Form
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -298,6 +299,69 @@ class MedicineDelete(CoreDeleteView):
     model = models.Medicine
     permission_required = ("core.delete_medicine",)
     success_url = reverse_lazy("core:medication-list")
+
+
+class MedicineRepeatDose(PermissionRequiredMixin, View):
+    """AJAX endpoint to repeat a medication dose."""
+
+    permission_required = ("core.add_medicine",)
+
+    def post(self, request, pk):
+        try:
+            original = models.Medicine.objects.get(pk=pk)
+
+            # Create a new medicine entry with current time
+            new_medicine = models.Medicine(
+                child=original.child,
+                name=original.name,
+                dosage=original.dosage,
+                dosage_unit=original.dosage_unit,
+                time=timezone.now(),
+                next_dose_interval=original.next_dose_interval,
+                is_recurring=original.is_recurring,
+                last_given_time=timezone.now(),
+                is_active=True,
+                notes=f"Repeated dose of {original.name}",
+            )
+            new_medicine.save()
+
+            # Update the original medicine's last_given_time
+            original.last_given_time = timezone.now()
+            original.save(update_fields=["last_given_time"])
+
+            return JsonResponse(
+                {"status": "success", "message": "Dose repeated successfully"}
+            )
+
+        except models.Medicine.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Medication not found"}, status=404
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+
+class MedicineRemoveActive(PermissionRequiredMixin, View):
+    """AJAX endpoint to remove a medication from active tracking."""
+
+    permission_required = ("core.change_medicine",)
+
+    def post(self, request, pk):
+        try:
+            medicine = models.Medicine.objects.get(pk=pk)
+            medicine.is_active = False
+            medicine.save(update_fields=["is_active"])
+
+            return JsonResponse(
+                {"status": "success", "message": "Medication removed from active list"}
+            )
+
+        except models.Medicine.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Medication not found"}, status=404
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
 class NoteList(PermissionRequiredMixin, BabyBuddyPaginatedView, BabyBuddyFilterView):

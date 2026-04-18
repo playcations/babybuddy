@@ -328,6 +328,7 @@ class MedicineForm(CoreModelForm, TaggableModelForm):
                 "name",
                 "dosage",
                 "dosage_unit",
+                "is_recurring",
             ],
             "layout": "required",
         },
@@ -343,6 +344,7 @@ class MedicineForm(CoreModelForm, TaggableModelForm):
             "dosage_unit",
             "time",
             "next_dose_interval",
+            "is_recurring",
             "notes",
             "tags",
         ]

@@ -114,6 +114,16 @@ urlpatterns = [
         name="medication-delete",
     ),
     path(
+        "medication/<int:pk>/repeat-dose/",
+        views.MedicineRepeatDose.as_view(),
+        name="medication-repeat-dose",
+    ),
+    path(
+        "medication/<int:pk>/remove-active/",
+        views.MedicineRemoveActive.as_view(),
+        name="medication-remove-active",
+    ),
+    path(
         "head-circumference/",
         views.HeadCircumferenceList.as_view(),
         name="head-circumference-list",

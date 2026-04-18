@@ -814,6 +814,29 @@ class Medicine(models.Model):
         verbose_name=_("Next Dose Interval"),
         help_text=_("Time until next dose can be given"),
     )
+    next_dose_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        editable=False,
+        verbose_name=_("Next Dose Time"),
+        help_text=_("Calculated time when next dose is allowed"),
+    )
+    is_recurring = models.BooleanField(
+        default=False,
+        verbose_name=_("Recurring Medication"),
+        help_text=_("Check if this medication is given on a schedule (vs as-needed)"),
+    )
+    last_given_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Last Given Time"),
+        help_text=_("When this medication was last administered"),
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("Whether this medication is still being tracked"),
+    )
     notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
     tags = TaggableManager(blank=True, through=Tagged)
 
@@ -824,17 +847,21 @@ class Medicine(models.Model):
         verbose_name = _("Medication")
         verbose_name_plural = _("Medications")
         default_permissions = ("view", "add", "change", "delete")
+        indexes = [
+            models.Index(fields=["child", "-time"], name="medicine_child_time_idx"),
+            models.Index(fields=["next_dose_time"], name="medicine_next_dose_idx"),
+            models.Index(
+                fields=["is_active", "child", "-last_given_time"],
+                name="medicine_active_idx",
+            ),
+        ]
 
-    @property
-    def next_dose_time(self):
-        """
-        Calculate when the next dose can be given based on the time this dose
-        was administered and the configured interval.
-        :returns: a DateTime instance or None if no interval is set.
-        """
+    def save(self, *args, **kwargs):
         if self.next_dose_interval:
-            return self.time + self.next_dose_interval
-        return None
+            self.next_dose_time = self.time + self.next_dose_interval
+        else:
+            self.next_dose_time = None
+        super().save(*args, **kwargs)
 
     @property
     def next_dose_ready(self):
@@ -845,6 +872,36 @@ class Medicine(models.Model):
         if self.next_dose_time:
             return timezone.now() >= self.next_dose_time
         return None
+
+    @property
+    def is_safe_to_give(self):
+        """Check if enough time has passed since last dose."""
+        if self.is_recurring:
+            return self.next_dose_ready
+
+        # For as-needed medications, check safety window
+        if not self.last_given_time or not self.next_dose_interval:
+            return True
+
+        return timezone.now() >= self.last_given_time + self.next_dose_interval
+
+    @property
+    def time_until_safe(self):
+        """Returns timedelta until medication is safe to give again, or None if safe now."""
+        target_time = None
+
+        if self.is_recurring and self.next_dose_time:
+            target_time = self.next_dose_time
+        elif not self.is_recurring and self.last_given_time and self.next_dose_interval:
+            target_time = self.last_given_time + self.next_dose_interval
+
+        if not target_time:
+            return None
+
+        remaining = target_time - timezone.now()
+        if remaining.total_seconds() <= 0:
+            return None
+        return remaining
 
     def clean(self):
         validate_time(self.time, "time")

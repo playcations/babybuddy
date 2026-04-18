@@ -59,5 +59,75 @@ BabyBuddy.Dashboard = (function ($) {
     },
   };
 
+  // Get CSRF token from cookie
+  function getCsrfToken() {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, 10) === "csrftoken=") {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // Medicine status card button handlers
+  $(document).on("click", ".repeat-dose-btn", function () {
+    var btn = $(this);
+    var url = btn.data("url");
+    var name = btn.data("medicine-name");
+
+    if (!confirm("Repeat dose of " + name + "?")) {
+      return;
+    }
+
+    $.ajax({
+      url: url,
+      type: "POST",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+      },
+      success: function (response) {
+        location.reload();
+      },
+      error: function (xhr) {
+        alert(
+          "Error: " + (xhr.responseJSON?.message || "Failed to repeat dose"),
+        );
+      },
+    });
+  });
+
+  $(document).on("click", ".remove-medicine-btn", function () {
+    var btn = $(this);
+    var url = btn.data("url");
+    var name = btn.data("medicine-name");
+
+    if (!confirm("Remove " + name + " from active tracking?")) {
+      return;
+    }
+
+    $.ajax({
+      url: url,
+      type: "POST",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+      },
+      success: function (response) {
+        location.reload();
+      },
+      error: function (xhr) {
+        alert(
+          "Error: " +
+            (xhr.responseJSON?.message || "Failed to remove medication"),
+        );
+      },
+    });
+  });
+
   return Dashboard;
 })(jQuery);

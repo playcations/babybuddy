@@ -282,20 +282,79 @@ class Command(BaseCommand):
         Add a Medicine entry.
         :returns:
         """
-        names = ["Tylenol", "Ibuprofen", "Vitamin D", "Amoxicillin", "Gripe Water"]
-        units = ["mg", "ml", "drops", "tablets"]
-        name = choice(names)
-        dosage = round(uniform(0.5, 10.0), 1)
-        dosage_unit = choice(units)
+        # Define medications with typical properties
+        medication_profiles = [
+            {
+                "name": "Tylenol",
+                "dosage": (2.5, 5.0),
+                "unit": "ml",
+                "interval": 4,
+                "recurring": False,
+            },
+            {
+                "name": "Ibuprofen",
+                "dosage": (2.5, 5.0),
+                "unit": "ml",
+                "interval": 6,
+                "recurring": False,
+            },
+            {
+                "name": "Vitamin D",
+                "dosage": (400, 400),
+                "unit": "IU",
+                "interval": 24,
+                "recurring": True,
+            },
+            {
+                "name": "Amoxicillin",
+                "dosage": (2.5, 5.0),
+                "unit": "ml",
+                "interval": 8,
+                "recurring": True,
+            },
+            {
+                "name": "Gripe Water",
+                "dosage": (2.5, 5.0),
+                "unit": "ml",
+                "interval": 6,
+                "recurring": False,
+            },
+            {
+                "name": "Probiotics",
+                "dosage": (5, 10),
+                "unit": "drops",
+                "interval": 24,
+                "recurring": True,
+            },
+            {
+                "name": "Iron Supplement",
+                "dosage": (1, 2),
+                "unit": "ml",
+                "interval": 24,
+                "recurring": True,
+            },
+        ]
+
+        profile = choice(medication_profiles)
+        name = profile["name"]
+        dosage = round(uniform(profile["dosage"][0], profile["dosage"][1]), 1)
+        dosage_unit = profile["unit"]
         time = self.time + timedelta(minutes=randint(1, 60))
 
         notes = ""
         if choice([True, False, False, False]):
             notes = " ".join(self.faker.sentences(randint(1, 3)))
 
+        # Set interval based on medication profile
         next_dose_interval = None
-        if choice([True, False]):
-            next_dose_interval = timedelta(hours=choice([4, 6, 8, 12]))
+        if choice([True, True, False]):
+            next_dose_interval = timedelta(hours=profile["interval"])
+
+        # Recurring medications are given on a schedule
+        is_recurring = profile["recurring"]
+
+        # Most medications are active, but some older ones may be inactive
+        is_active = choice([True, True, True, True, False])
 
         if time < self.time_now:
             instance = models.Medicine.objects.create(
@@ -305,6 +364,9 @@ class Command(BaseCommand):
                 dosage_unit=dosage_unit,
                 time=time,
                 next_dose_interval=next_dose_interval,
+                is_recurring=is_recurring,
+                is_active=is_active,
+                last_given_time=time,
                 notes=notes,
             )
             instance.save()

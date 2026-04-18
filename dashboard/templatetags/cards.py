@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import template
-from django.db.models import Avg, Count, Q, Sum
+from datetime import timedelta
+
+from django.db.models import Avg, Count, Max, Q, Sum
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -867,5 +869,98 @@ def card_medicine_last(context, child):
         "type": "medicine",
         "medicine": instance,
         "empty": not instance,
+        "hide_empty": _hide_empty(context),
+        "next_dose_ready": instance.next_dose_ready if instance else False,
+        "next_dose_time": instance.next_dose_time if instance else None,
+        "object": child,
+    }
+
+
+@register.inclusion_tag("cards/medicine_due.html", takes_context=True)
+def card_medicine_due(context, child):
+    """
+    Show medications that are due or overdue.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with due medications.
+    """
+    now = timezone.now()
+    due_medicines = (
+        models.Medicine.objects.filter(
+            child=child,
+            next_dose_time__lte=now,
+            next_dose_time__isnull=False,
+            is_active=True,
+        )
+        .filter(**_filter_data_age(context, "time"))
+        .select_related("child")
+        .order_by("next_dose_time")[:3]
+    )
+
+    return {
+        "type": "medicine_due",
+        "medicines": due_medicines,
+        "empty": not due_medicines.exists(),
+        "hide_empty": _hide_empty(context),
+        "now": now,
+    }
+
+
+@register.inclusion_tag("cards/medicine_status.html", takes_context=True)
+def card_medicine_status(context, child):
+    """
+    Show status of recently given medications.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with active medications and their status.
+    """
+    # Get medications given in the last 48 hours that are still active
+    cutoff_time = timezone.now() - timedelta(hours=48)
+
+    # Get unique medication names with their most recent administration
+    recent_medicines = (
+        models.Medicine.objects.filter(
+            child=child, is_active=True, time__gte=cutoff_time
+        )
+        .values("name")
+        .annotate(last_given=Max("time"), latest_id=Max("id"))
+        .order_by("-last_given")[:5]
+    )
+
+    # Get full medicine objects and build status
+    medicine_status = []
+    for med_data in recent_medicines:
+        medicine = models.Medicine.objects.get(id=med_data["latest_id"])
+
+        # Determine status
+        is_safe = medicine.is_safe_to_give
+        time_until = medicine.time_until_safe
+
+        if is_safe:
+            status_text = _("Safe to give")
+        elif time_until:
+            hours = int(time_until.total_seconds() // 3600)
+            minutes = int((time_until.total_seconds() % 3600) // 60)
+            if hours > 0:
+                status_text = _("Wait %(hours)dh %(minutes)dm") % {
+                    "hours": hours,
+                    "minutes": minutes,
+                }
+            else:
+                status_text = _("Wait %(minutes)dm") % {"minutes": minutes}
+        else:
+            status_text = _("Safe to give")
+
+        medicine_status.append(
+            {
+                "medicine": medicine,
+                "last_given_display": medicine.time,
+                "is_safe": is_safe,
+                "status_text": status_text,
+            }
+        )
+
+    return {
+        "type": "medicine_status",
+        "medicine_status": medicine_status,
+        "empty": not medicine_status,
         "hide_empty": _hide_empty(context),
     }
