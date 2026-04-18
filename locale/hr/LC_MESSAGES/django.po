@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Baby Buddy\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-09 12:32-0400\n"
+"POT-Creation-Date: 2026-04-18 13:21+0000\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,8 +19,7 @@ msgstr ""
 msgid "Settings"
 msgstr "Postavke"
 
-#: babybuddy/admin.py:17
-#: babybuddy/templates/babybuddy/nav-dropdown.html:108
+#: babybuddy/admin.py:17 babybuddy/templates/babybuddy/nav-dropdown.html:108
 #: babybuddy/templates/babybuddy/user_settings_form.html:60
 #: dashboard/templates/dashboard/child.html:4
 #: dashboard/templates/dashboard/child.html:11
@@ -105,9 +104,8 @@ msgstr "Jezik"
 msgid "Timezone"
 msgstr "Vremenska zona"
 
-#: babybuddy/models.py:122 babybuddy/models.py:123
-#: babybuddy/models.py:124 babybuddy/models.py:125
-#: babybuddy/models.py:126
+#: babybuddy/models.py:122 babybuddy/models.py:123 babybuddy/models.py:124
+#: babybuddy/models.py:125 babybuddy/models.py:126
 #, fuzzy, python-format
 #| msgid "%(count)d Per Page"
 msgid "%(count)d Per Page"
@@ -311,12 +309,14 @@ msgstr "Hranjenje bočicom"
 #: babybuddy/templates/babybuddy/nav-dropdown.html:275
 #: babybuddy/templates/babybuddy/nav-dropdown.html:281 core/models.py:824
 #: core/models.py:853 core/templates/core/medicine_confirm_delete.html:8
-#: core/templates/core/medicine_form.html:14
+#: core/templates/core/medicine_form.html:12
 #: core/templates/core/medicine_list.html:4
 #: core/templates/core/medicine_list.html:7
 #: core/templates/core/medicine_list.html:11
-msgid "Medicine"
-msgstr ""
+#, fuzzy
+#| msgid "Add Feeding"
+msgid "Medication"
+msgstr "Dodaj hranjenje"
 
 #: babybuddy/templates/babybuddy/nav-dropdown.html:70
 #: babybuddy/templates/babybuddy/nav-dropdown.html:288 core/models.py:517
@@ -334,8 +334,7 @@ msgstr "Dojenje"
 
 #: babybuddy/templates/babybuddy/nav-dropdown.html:76
 #: babybuddy/templates/babybuddy/nav-dropdown.html:150 core/models.py:462
-#: core/models.py:476 core/models.py:480
-#: core/templates/core/note_list.html:29
+#: core/models.py:476 core/models.py:480 core/templates/core/note_list.html:29
 msgid "Note"
 msgstr "Bilješka"
 
@@ -344,10 +343,8 @@ msgstr "Bilješka"
 #: babybuddy/templates/babybuddy/welcome.html:47 core/models.py:561
 #: core/models.py:562 core/models.py:565
 #: core/templates/core/sleep_confirm_delete.html:8
-#: core/templates/core/sleep_form.html:12
-#: core/templates/core/sleep_list.html:4
-#: core/templates/core/sleep_list.html:7
-#: core/templates/core/sleep_list.html:11
+#: core/templates/core/sleep_form.html:12 core/templates/core/sleep_list.html:4
+#: core/templates/core/sleep_list.html:7 core/templates/core/sleep_list.html:11
 #: core/templates/core/timer_detail.html:45
 msgid "Sleep"
 msgstr "Spavanje"
@@ -376,20 +373,17 @@ msgstr "Kronologija"
 #: babybuddy/templates/babybuddy/nav-dropdown.html:131 core/models.py:215
 #: core/templates/core/child_confirm_delete.html:8
 #: core/templates/core/child_detail.html:6
-#: core/templates/core/child_form.html:12
-#: core/templates/core/child_list.html:4
-#: core/templates/core/child_list.html:7
-#: core/templates/core/child_list.html:11
+#: core/templates/core/child_form.html:12 core/templates/core/child_list.html:4
+#: core/templates/core/child_list.html:7 core/templates/core/child_list.html:11
 #: dashboard/templates/dashboard/child.html:8
 #: reports/templates/reports/base.html:6
 msgid "Children"
 msgstr "Djeca"
 
 #: babybuddy/templates/babybuddy/nav-dropdown.html:137 core/models.py:163
-#: core/models.py:214 core/models.py:255 core/models.py:308
-#: core/models.py:376 core/models.py:408 core/models.py:460
-#: core/models.py:489 core/models.py:537 core/models.py:591
-#: core/models.py:625 core/models.py:694 core/models.py:742
+#: core/models.py:214 core/models.py:255 core/models.py:308 core/models.py:376
+#: core/models.py:408 core/models.py:460 core/models.py:489 core/models.py:537
+#: core/models.py:591 core/models.py:625 core/models.py:694 core/models.py:742
 #: core/models.py:773 core/templates/core/bmi_list.html:26
 #: core/templates/core/diaperchange_list.html:27
 #: core/templates/core/feeding_list.html:30
@@ -407,14 +401,12 @@ msgid "Child"
 msgstr "Dijete"
 
 #: babybuddy/templates/babybuddy/nav-dropdown.html:144 core/models.py:169
-#: core/models.py:274 core/models.py:345 core/models.py:384
-#: core/models.py:414 core/models.py:477 core/models.py:509
-#: core/models.py:552 core/models.py:599 core/models.py:748
-#: core/models.py:817 core/templates/core/note_confirm_delete.html:8
-#: core/templates/core/note_form.html:12
-#: core/templates/core/note_list.html:4
-#: core/templates/core/note_list.html:7
-#: core/templates/core/note_list.html:11
+#: core/models.py:274 core/models.py:345 core/models.py:384 core/models.py:414
+#: core/models.py:477 core/models.py:509 core/models.py:552 core/models.py:599
+#: core/models.py:748 core/models.py:817
+#: core/templates/core/note_confirm_delete.html:8
+#: core/templates/core/note_form.html:12 core/templates/core/note_list.html:4
+#: core/templates/core/note_list.html:7 core/templates/core/note_list.html:11
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -466,9 +458,8 @@ msgstr "Unos opsega glave"
 #: core/templates/core/height_list.html:4
 #: core/templates/core/height_list.html:7
 #: core/templates/core/height_list.html:11
-#: core/templates/core/height_list.html:28
-#: reports/graphs/height_change.py:30 reports/graphs/height_change.py:86
-#: reports/graphs/height_change.py:89
+#: core/templates/core/height_list.html:28 reports/graphs/height_change.py:30
+#: reports/graphs/height_change.py:86 reports/graphs/height_change.py:89
 #: reports/templates/reports/height_change.html:4
 #: reports/templates/reports/height_change.html:9
 #: reports/templates/reports/report_list.html:36
@@ -507,9 +498,8 @@ msgstr "Odčitavanje temperature"
 #: core/templates/core/weight_list.html:4
 #: core/templates/core/weight_list.html:7
 #: core/templates/core/weight_list.html:11
-#: core/templates/core/weight_list.html:28
-#: reports/graphs/weight_change.py:28 reports/graphs/weight_change.py:84
-#: reports/graphs/weight_change.py:87
+#: core/templates/core/weight_list.html:28 reports/graphs/weight_change.py:28
+#: reports/graphs/weight_change.py:84 reports/graphs/weight_change.py:87
 #: reports/templates/reports/report_list.html:56
 #: reports/templates/reports/weight_change.html:4
 #: reports/templates/reports/weight_change.html:9
@@ -560,8 +550,8 @@ msgstr "Unos vremena na trbuhu"
 #: babybuddy/templates/babybuddy/user_add_device.html:7
 #: babybuddy/templates/babybuddy/user_list.html:16
 #: babybuddy/templates/babybuddy/user_password_form.html:7
-#: babybuddy/templates/babybuddy/user_settings_form.html:7
-#: core/models.py:638 core/templates/core/timer_list.html:28
+#: babybuddy/templates/babybuddy/user_settings_form.html:7 core/models.py:638
+#: core/templates/core/timer_list.html:28
 msgid "User"
 msgstr "Korisnik"
 
@@ -600,9 +590,9 @@ msgstr "API preglednik"
 #: core/templates/core/pumping_list.html:31
 #: core/templates/core/sleep_list.html:32
 #: core/templates/core/tag_confirm_delete.html:8
-#: core/templates/core/tag_detail.html:12
-#: core/templates/core/tag_form.html:12 core/templates/core/tag_list.html:4
-#: core/templates/core/tag_list.html:7 core/templates/core/tag_list.html:11
+#: core/templates/core/tag_detail.html:12 core/templates/core/tag_form.html:12
+#: core/templates/core/tag_list.html:4 core/templates/core/tag_list.html:7
+#: core/templates/core/tag_list.html:11
 #: core/templates/core/temperature_list.html:30
 #: core/templates/core/tummytime_list.html:31
 #: core/templates/core/weight_list.html:29
@@ -764,18 +754,16 @@ msgstr "Stvori korisnika"
 
 #: babybuddy/templates/babybuddy/user_form.html:16
 #: babybuddy/templates/babybuddy/user_form.html:32
-#: core/templates/core/bmi_form.html:15
-#: core/templates/core/child_form.html:18
+#: core/templates/core/bmi_form.html:15 core/templates/core/child_form.html:18
 #: core/templates/core/diaperchange_form.html:15
 #: core/templates/core/feeding_form.html:17
 #: core/templates/core/head_circumference_form.html:15
 #: core/templates/core/height_form.html:15
-#: core/templates/core/medicine_form.html:17
-#: core/templates/core/medicine_form.html:27
+#: core/templates/core/medicine_form.html:15
+#: core/templates/core/medicine_form.html:23
 #: core/templates/core/note_form.html:15
 #: core/templates/core/pumping_form.html:15
-#: core/templates/core/sleep_form.html:15
-#: core/templates/core/tag_form.html:18
+#: core/templates/core/sleep_form.html:15 core/templates/core/tag_form.html:18
 #: core/templates/core/temperature_form.html:15
 #: core/templates/core/timer_form.html:14
 #: core/templates/core/tummytime_form.html:15
@@ -814,8 +802,7 @@ msgid "Locked"
 msgstr "Zaključano"
 
 #: babybuddy/templates/babybuddy/user_list.html:24
-#: core/templates/core/bmi_list.html:23
-#: core/templates/core/bmi_list.html:38
+#: core/templates/core/bmi_list.html:23 core/templates/core/bmi_list.html:38
 #: core/templates/core/child_list.html:29
 #: core/templates/core/child_list.html:53
 #: core/templates/core/diaperchange_list.html:24
@@ -828,13 +815,11 @@ msgstr "Zaključano"
 #: core/templates/core/height_list.html:38
 #: core/templates/core/medicine_list.html:23
 #: core/templates/core/medicine_list.html:40
-#: core/templates/core/note_list.html:23
-#: core/templates/core/note_list.html:39
+#: core/templates/core/note_list.html:23 core/templates/core/note_list.html:39
 #: core/templates/core/pumping_list.html:23
 #: core/templates/core/pumping_list.html:41
 #: core/templates/core/sleep_list.html:23
-#: core/templates/core/sleep_list.html:42
-#: core/templates/core/tag_list.html:23
+#: core/templates/core/sleep_list.html:42 core/templates/core/tag_list.html:23
 #: core/templates/core/tag_list.html:36
 #: core/templates/core/temperature_list.html:24
 #: core/templates/core/temperature_list.html:39
@@ -912,8 +897,7 @@ msgstr ""
 "drugog, trećeg, itd.) djeteta!"
 
 #: babybuddy/templates/babybuddy/welcome.html:76
-#: core/templates/core/child_form.html:7
-#: core/templates/core/child_form.html:20
+#: core/templates/core/child_form.html:7 core/templates/core/child_form.html:20
 #: core/templates/core/child_form.html:29
 msgid "Add a Child"
 msgstr "Dodaj dijete"
@@ -923,13 +907,11 @@ msgstr "Dodaj dijete"
 msgid "Site Settings"
 msgstr "Postavke web-stranice"
 
-#: babybuddy/templates/error/400.html:4
-#: babybuddy/templates/error/400.html:7
+#: babybuddy/templates/error/400.html:4 babybuddy/templates/error/400.html:7
 msgid "Bad Request"
 msgstr "Neispravan zahtjev"
 
-#: babybuddy/templates/error/403.html:4
-#: babybuddy/templates/error/403.html:7
+#: babybuddy/templates/error/403.html:4 babybuddy/templates/error/403.html:7
 msgid "Permission Denied"
 msgstr "Dozvola je odbijena"
 
@@ -954,8 +936,7 @@ msgstr ""
 "Dodaj %(value)s varijabli okruženja %(variable)s.  Ako je potrebno više "
 "izvora, odvoji ih zarezima."
 
-#: babybuddy/templates/error/404.html:4
-#: babybuddy/templates/error/404.html:7
+#: babybuddy/templates/error/404.html:4 babybuddy/templates/error/404.html:7
 msgid "Page Not Found"
 msgstr "Stranica nije pronađena"
 
@@ -964,8 +945,7 @@ msgstr "Stranica nije pronađena"
 msgid "The path %(path)s does not exist."
 msgstr "Putanja %(path)s ne postoji."
 
-#: babybuddy/templates/error/500.html:4
-#: babybuddy/templates/error/500.html:7
+#: babybuddy/templates/error/500.html:4 babybuddy/templates/error/500.html:7
 msgid "Server Error"
 msgstr "Greška servera"
 
@@ -1201,8 +1181,8 @@ msgstr "Boja"
 msgid "Last used"
 msgstr "Zadnje korišteno"
 
-#: core/models.py:167 core/models.py:382 core/models.py:412
-#: core/models.py:746 core/templates/core/bmi_list.html:24
+#: core/models.py:167 core/models.py:382 core/models.py:412 core/models.py:746
+#: core/templates/core/bmi_list.html:24
 #: core/templates/core/feeding_list.html:28
 #: core/templates/core/head_circumference_list.html:25
 #: core/templates/core/height_list.html:24
@@ -1211,19 +1191,14 @@ msgstr "Zadnje korišteno"
 #: core/templates/core/weight_list.html:24 reports/graphs/bmi_change.py:28
 #: reports/graphs/diaperchange_amounts.py:37
 #: reports/graphs/diaperchange_intervals.py:67
-#: reports/graphs/diaperchange_types.py:49
-#: reports/graphs/feeding_amounts.py:70
-#: reports/graphs/feeding_duration.py:58
-#: reports/graphs/feeding_intervals.py:42
+#: reports/graphs/diaperchange_types.py:49 reports/graphs/feeding_amounts.py:70
+#: reports/graphs/feeding_duration.py:58 reports/graphs/feeding_intervals.py:42
 #: reports/graphs/feeding_pattern.py:181
 #: reports/graphs/head_circumference_change.py:28
-#: reports/graphs/height_change.py:87
-#: reports/graphs/medicine_frequency.py:39
-#: reports/graphs/medicine_intervals.py:47
-#: reports/graphs/pumping_amounts.py:60 reports/graphs/sleep_pattern.py:168
-#: reports/graphs/sleep_totals.py:59
-#: reports/graphs/tummytime_duration.py:51
-#: reports/graphs/weight_change.py:85
+#: reports/graphs/height_change.py:87 reports/graphs/medicine_frequency.py:39
+#: reports/graphs/medicine_intervals.py:47 reports/graphs/pumping_amounts.py:60
+#: reports/graphs/sleep_pattern.py:168 reports/graphs/sleep_totals.py:59
+#: reports/graphs/tummytime_duration.py:51 reports/graphs/weight_change.py:85
 msgid "Date"
 msgstr "Datum"
 
@@ -1294,18 +1269,17 @@ msgstr "Žuta"
 msgid "Amount"
 msgstr "Količina"
 
-#: core/models.py:314 core/models.py:495 core/models.py:543
-#: core/models.py:631 core/models.py:700
+#: core/models.py:314 core/models.py:495 core/models.py:543 core/models.py:631
+#: core/models.py:700
 msgid "Start time"
 msgstr "Vrijeme početka"
 
-#: core/models.py:317 core/models.py:501 core/models.py:546
-#: core/models.py:703
+#: core/models.py:317 core/models.py:501 core/models.py:546 core/models.py:703
 msgid "End time"
 msgstr "Vrijeme završetka"
 
-#: core/models.py:320 core/models.py:506 core/models.py:550
-#: core/models.py:706 core/templates/core/feeding_list.html:37
+#: core/models.py:320 core/models.py:506 core/models.py:550 core/models.py:706
+#: core/templates/core/feeding_list.html:37
 #: core/templates/core/pumping_list.html:29
 #: core/templates/core/sleep_list.html:29
 #: core/templates/core/tummytime_list.html:28
@@ -1391,12 +1365,9 @@ msgstr "Timer"
 
 #: core/models.py:647 core/templates/core/timer_confirm_delete.html:8
 #: core/templates/core/timer_detail.html:7
-#: core/templates/core/timer_form.html:8
-#: core/templates/core/timer_list.html:4
-#: core/templates/core/timer_list.html:7
-#: core/templates/core/timer_list.html:11
-#: core/templates/core/timer_nav.html:9
-#: core/templates/core/timer_nav.html:49
+#: core/templates/core/timer_form.html:8 core/templates/core/timer_list.html:4
+#: core/templates/core/timer_list.html:7 core/templates/core/timer_list.html:11
+#: core/templates/core/timer_nav.html:9 core/templates/core/timer_nav.html:49
 #: dashboard/templates/cards/timer_list.html:4
 msgid "Timers"
 msgstr "Timeri"
@@ -1411,7 +1382,7 @@ msgid "Milestone"
 msgstr "Etapa"
 
 #: core/models.py:781 core/templates/core/medicine_list.html:28
-msgid "Medicine Name"
+msgid "Medication Name"
 msgstr ""
 
 #: core/models.py:782
@@ -1464,8 +1435,10 @@ msgid "Time until next dose can be given"
 msgstr ""
 
 #: core/models.py:825
-msgid "Medicines"
-msgstr ""
+#, fuzzy
+#| msgid "Actions"
+msgid "Medications"
+msgstr "Radnje"
 
 #: core/templates/core/bmi_confirm_delete.html:4
 msgid "Delete a BMI Entry"
@@ -1537,8 +1510,7 @@ msgstr "Dodaj mijenjanje pelene"
 
 #: core/templates/core/diaperchange_form.html:17
 #: core/templates/core/feeding_form.html:19
-#: core/templates/core/note_form.html:17
-#: core/templates/core/sleep_form.html:17
+#: core/templates/core/note_form.html:17 core/templates/core/sleep_form.html:17
 #: core/templates/core/tag_form.html:20
 #: core/templates/core/tummytime_form.html:17
 #: core/templates/core/widget_tag_editor.html:33
@@ -1645,33 +1617,21 @@ msgstr "Nije pronađen nijedan unos veličine."
 #: core/templates/core/medicine_confirm_delete.html:4
 #, fuzzy
 #| msgid "Delete a Sleep Entry"
-msgid "Delete a Medicine Entry"
+msgid "Delete a Medication Entry"
 msgstr "Izbriši unos spavanja"
 
 #: core/templates/core/medicine_form.html:7
-#: core/templates/core/medicine_form.html:19
-#: core/templates/core/medicine_form.html:30
-msgid "Repeat Last Medicine"
-msgstr ""
-
-#: core/templates/core/medicine_form.html:9
-#: core/templates/core/medicine_form.html:21
-#: core/templates/core/medicine_form.html:35
+#: core/templates/core/medicine_form.html:17
+#: core/templates/core/medicine_form.html:26
 #, fuzzy
 #| msgid "Add a Sleep Entry"
-msgid "Add a Medicine Entry"
+msgid "Add a Medication Entry"
 msgstr "Dodaj unos spavanja"
-
-#: core/templates/core/medicine_form.html:32
-msgid ""
-"Form has been pre-filled with the last medicine data. Please verify and "
-"adjust as needed."
-msgstr ""
 
 #: core/templates/core/medicine_list.html:14
 #, fuzzy
 #| msgid "Add Feeding"
-msgid "Add Medicine"
+msgid "Add Medication"
 msgstr "Dodaj hranjenje"
 
 #: core/templates/core/medicine_list.html:67
@@ -1683,7 +1643,7 @@ msgstr "Intervali hranjenja"
 #: core/templates/core/medicine_list.html:81
 #, fuzzy
 #| msgid "No bmi entries found."
-msgid "No medicine entries found."
+msgid "No medication entries found."
 msgstr "Nije pronađen nijedan unos BMI-a."
 
 #: core/templates/core/note_confirm_delete.html:4
@@ -1694,8 +1654,7 @@ msgstr "Izbriši bilješku"
 msgid "Update a Note"
 msgstr "Aktualiziraj bilješku"
 
-#: core/templates/core/note_form.html:7
-#: core/templates/core/note_form.html:26
+#: core/templates/core/note_form.html:7 core/templates/core/note_form.html:26
 msgid "Add a Note"
 msgstr "Dodaj bilješku"
 
@@ -1744,8 +1703,7 @@ msgstr "Izbriši unos spavanja"
 msgid "Update a Sleep Entry"
 msgstr "Aktualiziraj unos spavanja"
 
-#: core/templates/core/sleep_form.html:7
-#: core/templates/core/sleep_form.html:26
+#: core/templates/core/sleep_form.html:7 core/templates/core/sleep_form.html:26
 msgid "Add a Sleep Entry"
 msgstr "Dodaj unos spavanja"
 
@@ -1794,13 +1752,12 @@ msgstr ""
 msgid "Delete Tag"
 msgstr "Izbriši oznaku"
 
-#: core/templates/core/tag_detail.html:5
-#: core/templates/core/tag_form.html:5
+#: core/templates/core/tag_detail.html:5 core/templates/core/tag_form.html:5
 msgid "Update a Tag"
 msgstr "Aktualiziraj oznaku"
 
-#: core/templates/core/tag_detail.html:7
-#: core/templates/core/tag_form.html:7 core/templates/core/tag_form.html:29
+#: core/templates/core/tag_detail.html:7 core/templates/core/tag_form.html:7
+#: core/templates/core/tag_form.html:29
 msgid "Add a Tag"
 msgstr "Dodaj oznaku"
 
@@ -1914,8 +1871,7 @@ msgid "Restart timer"
 msgstr "Ponovo pokreni timer"
 
 #: core/templates/core/timer_form.html:25
-#: core/templates/core/timer_list.html:14
-#: core/templates/core/timer_nav.html:14
+#: core/templates/core/timer_list.html:14 core/templates/core/timer_nav.html:14
 msgid "Start Timer"
 msgstr "Pokreni timer"
 
@@ -2260,7 +2216,7 @@ msgstr[2] "%(counter)s hranjenja"
 #: dashboard/templates/cards/medicine_last.html:4
 #, fuzzy
 #| msgid "Last Feeding"
-msgid "Last Medicine"
+msgid "Last Medication"
 msgstr "Zadnje hranjenje"
 
 #: dashboard/templates/cards/medicine_last.html:27
@@ -2427,8 +2383,7 @@ msgid "Change amount"
 msgstr "Količina mijenjanja"
 
 #: reports/graphs/diaperchange_intervals.py:56
-#: reports/graphs/diaperchange_types.py:41
-#: reports/graphs/feeding_amounts.py:58
+#: reports/graphs/diaperchange_types.py:41 reports/graphs/feeding_amounts.py:58
 msgid "Total"
 msgstr "Ukupno"
 
@@ -2514,8 +2469,7 @@ msgstr "Interval hranjenja (sati)"
 msgid "Feeding Pattern"
 msgstr "Ritam hranjenja"
 
-#: reports/graphs/feeding_pattern.py:195
-#: reports/graphs/sleep_pattern.py:182
+#: reports/graphs/feeding_pattern.py:195 reports/graphs/sleep_pattern.py:182
 msgid "Time of day"
 msgstr "Doba dana"
 
@@ -2548,25 +2502,25 @@ msgstr "Učestalost hranjenja"
 #: reports/graphs/medicine_frequency.py:38
 #, fuzzy
 #| msgid "Feeding frequency"
-msgid "Medicine frequency"
+msgid "Medication frequency"
 msgstr "Učestalost hranjenja"
 
 #: reports/graphs/medicine_frequency.py:44
 #, fuzzy
 #| msgid "Number of feedings"
-msgid "Number of medicines"
+msgid "Number of medications"
 msgstr "Broj hranjenja"
 
 #: reports/graphs/medicine_intervals.py:46
 #, fuzzy
 #| msgid "Feeding intervals"
-msgid "Medicine intervals"
+msgid "Medication intervals"
 msgstr "Intervali hranjenja"
 
 #: reports/graphs/medicine_intervals.py:52
 #, fuzzy
 #| msgid "Feeding interval (hours)"
-msgid "Medicine interval (hours)"
+msgid "Medication interval (hours)"
 msgstr "Interval hranjenja (sati)"
 
 #: reports/graphs/pumping_amounts.py:59
@@ -2640,7 +2594,7 @@ msgstr "Intervali hranjenja"
 #: reports/templates/reports/report_list.html:42
 #, fuzzy
 #| msgid "Feeding frequency"
-msgid "Medicine Frequency"
+msgid "Medication Frequency"
 msgstr "Učestalost hranjenja"
 
 #: reports/templates/reports/medicine_intervals.html:4
@@ -2648,7 +2602,7 @@ msgstr "Učestalost hranjenja"
 #: reports/templates/reports/report_list.html:44
 #, fuzzy
 #| msgid "Feeding Intervals"
-msgid "Medicine Intervals"
+msgid "Medication Intervals"
 msgstr "Intervali hranjenja"
 
 #: reports/templates/reports/report_base.html:13
