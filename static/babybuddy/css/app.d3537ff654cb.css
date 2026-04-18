@@ -12229,7 +12229,7 @@ textarea.form-control-lg {
 @font-face {
   font-family: "babybuddy";
   src: url("../font/babybuddy.425240ec9837.eot?7476955");
-  src: url("../font/babybuddy.425240ec9837.eot?7476955#iefix") format("embedded-opentype"), url("../font/babybuddy.0c09e0f6106e.woff2?7476955") format("woff2"), url("../font/babybuddy.6786a1b7f7c4.woff?7476955") format("woff"), url("../font/babybuddy.5fbfa02ba6a5.ttf?7476955") format("truetype"), url("../font/babybuddy.9db7c4a0d3a5.svg?7476955#babybuddy") format("svg");
+  src: url("../font/babybuddy.425240ec9837.eot?7476955#iefix") format("embedded-opentype"), url("../font/babybuddy.0c09e0f6106e.woff2?7476955") format("woff2"), url("../font/babybuddy.6786a1b7f7c4.woff?7476955") format("woff"), url("../font/babybuddy.5fbfa02ba6a5.ttf?7476955") format("truetype"), url("../font/babybuddy.4753ac9ecdb8.svg?7476955#babybuddy") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -12239,7 +12239,7 @@ textarea.form-control-lg {
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'babybuddy';
-    src: url("../font/babybuddy.9db7c4a0d3a5.svg?7476955#babybuddy") format('svg');
+    src: url("../font/babybuddy.4753ac9ecdb8.svg?7476955#babybuddy") format('svg');
   }
 }
 */
