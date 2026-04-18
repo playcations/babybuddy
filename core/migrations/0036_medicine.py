@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                         db_index=True,
                         help_text="Name of the medication administered",
                         max_length=255,
-                        verbose_name="Medicine Name",
+                        verbose_name="Medication Name",
                     ),
                 ),
                 (
@@ -53,8 +53,6 @@ class Migration(migrations.Migration):
                             ("ml", "ML"),
                             ("tablets", "Tablets"),
                             ("drops", "Drops"),
-                            ("tsp", "Teaspoons"),
-                            ("tbsp", "Tablespoons"),
                         ],
                         max_length=20,
                         verbose_name="Dosage Unit",
@@ -102,8 +100,8 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name": "Medicine",
-                "verbose_name_plural": "Medicines",
+                "verbose_name": "Medication",
+                "verbose_name_plural": "Medications",
                 "ordering": ["-time"],
                 "default_permissions": ("view", "add", "change", "delete"),
             },

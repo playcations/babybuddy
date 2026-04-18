@@ -778,7 +778,7 @@ class Medicine(models.Model):
         max_length=255,
         blank=False,
         null=False,
-        verbose_name=_("Medicine Name"),
+        verbose_name=_("Medication Name"),
         help_text=_("Name of the medication administered"),
         db_index=True,
     )
@@ -821,8 +821,8 @@ class Medicine(models.Model):
 
     class Meta:
         ordering = ["-time"]
-        verbose_name = _("Medicine")
-        verbose_name_plural = _("Medicines")
+        verbose_name = _("Medication")
+        verbose_name_plural = _("Medications")
         default_permissions = ("view", "add", "change", "delete")
 
     @property
@@ -850,7 +850,7 @@ class Medicine(models.Model):
         validate_time(self.time, "time")
 
     def __str__(self):
-        return str(_("Medicine"))
+        return str(_("Medication"))
 
 
 class WeightPercentile(models.Model):

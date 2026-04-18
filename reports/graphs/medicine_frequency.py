@@ -35,13 +35,13 @@ def medicine_frequency(instances):
     )
 
     layout_args = utils.default_graph_layout_options()
-    layout_args["title"] = "<b>" + _("Medicine frequency") + "</b>"
+    layout_args["title"] = "<b>" + _("Medication frequency") + "</b>"
     layout_args["xaxis"]["title"] = _("Date")
     layout_args["xaxis"]["type"] = "date"
     layout_args["xaxis"]["autorange"] = True
     layout_args["xaxis"]["autorangeoptions"] = utils.autorangeoptions(trace.x)
     layout_args["xaxis"]["rangeselector"] = utils.rangeselector_date()
-    layout_args["yaxis"]["title"] = _("Number of medicines")
+    layout_args["yaxis"]["title"] = _("Number of medications")
 
     fig = go.Figure({"data": [trace], "layout": go.Layout(**layout_args)})
     output = plotly.plot(fig, output_type="div", include_plotlyjs=False)

@@ -417,7 +417,7 @@ class MedicineTestCase(TestCase):
 
     def test_medicine_create(self):
         self.assertEqual(self.medicine, models.Medicine.objects.first())
-        self.assertEqual(str(self.medicine), "Medicine")
+        self.assertEqual(str(self.medicine), "Medication")
         self.assertEqual(self.medicine.name, "Tylenol")
         self.assertEqual(self.medicine.dosage, 5.0)
         self.assertEqual(self.medicine.dosage_unit, "ml")

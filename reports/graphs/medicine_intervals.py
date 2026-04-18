@@ -43,13 +43,13 @@ def medicine_intervals(instances):
     )
 
     layout_args = utils.default_graph_layout_options()
-    layout_args["title"] = "<b>" + _("Medicine intervals") + "</b>"
+    layout_args["title"] = "<b>" + _("Medication intervals") + "</b>"
     layout_args["xaxis"]["title"] = _("Date")
     layout_args["xaxis"]["type"] = "date"
     layout_args["xaxis"]["autorange"] = True
     layout_args["xaxis"]["autorangeoptions"] = utils.autorangeoptions(trace_avg.x)
     layout_args["xaxis"]["rangeselector"] = utils.rangeselector_date()
-    layout_args["yaxis"]["title"] = _("Medicine interval (hours)")
+    layout_args["yaxis"]["title"] = _("Medication interval (hours)")
 
     fig = go.Figure({"data": [trace_avg], "layout": go.Layout(**layout_args)})
     output = plotly.plot(fig, output_type="div", include_plotlyjs=False)

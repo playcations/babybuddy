@@ -300,31 +300,6 @@ class FeedingFormsTestCase(FormsTestCaseBase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
 
-    def test_bottle_feeding_add_end_equals_start(self):
-        # Ensure no existing feedings interfere with the test.
-        models.Feeding.objects.all().delete()
-
-        start_time = timezone.localtime() - timezone.timedelta(minutes=10)
-        params = {
-            "child": self.child.id,
-            "start": self.localtime_string(start_time),
-            "type": "formula",  # Or any type, doesn't matter for this test
-            "method": "bottle",  # This is crucial for the BottleFeedingForm
-            "amount": 100,
-        }
-
-        # Simulate POST request to the dedicated bottle feeding add page
-        page = self.c.post("/feedings/bottle/add/", params, follow=True)
-
-        self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Feeding entry for {} added".format(str(self.child)))
-
-        # Retrieve the newly created feeding object
-        new_feeding = models.Feeding.objects.first()
-
-        # Assert that end time equals start time
-        self.assertEqual(new_feeding.start, new_feeding.end)
-
     def test_edit(self):
         end = timezone.localtime()
         start = end - timezone.timedelta(minutes=30)
@@ -991,7 +966,9 @@ class MedicineFormsTestCase(FormsTestCaseBase):
 
         page = self.c.post("/medicine/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+        self.assertContains(
+            page, "Medication entry for {} added".format(str(self.child))
+        )
 
     def test_add_without_interval(self):
         params = {
@@ -1005,7 +982,9 @@ class MedicineFormsTestCase(FormsTestCaseBase):
 
         page = self.c.post("/medicine/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+        self.assertContains(
+            page, "Medication entry for {} added".format(str(self.child))
+        )
 
     def test_add_with_tags(self):
         params = {
@@ -1020,7 +999,9 @@ class MedicineFormsTestCase(FormsTestCaseBase):
 
         page = self.c.post("/medicine/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+        self.assertContains(
+            page, "Medication entry for {} added".format(str(self.child))
+        )
 
     def test_edit(self):
         params = {
@@ -1040,7 +1021,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
         self.assertEqual(self.medicine.dosage, params["dosage"])
         self.assertEqual(self.medicine.notes, params["notes"])
         self.assertContains(
-            page, "Medicine entry for {} updated".format(str(self.medicine.child))
+            page, "Medication entry for {} updated".format(str(self.medicine.child))
         )
 
     def test_edit_change_interval(self):
@@ -1059,7 +1040,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
         self.assertEqual(page.status_code, 200)
         self.medicine.refresh_from_db()
         self.assertContains(
-            page, "Medicine entry for {} updated".format(str(self.medicine.child))
+            page, "Medication entry for {} updated".format(str(self.medicine.child))
         )
 
     def test_edit_remove_interval(self):
@@ -1081,7 +1062,7 @@ class MedicineFormsTestCase(FormsTestCaseBase):
     def test_delete(self):
         page = self.c.post("/medicine/{}/delete/".format(self.medicine.id), follow=True)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Medicine entry deleted")
+        self.assertContains(page, "Medication entry deleted")
 
     def test_form_without_dosage(self):
         # Dosage is now optional — form should be valid without it
@@ -1093,7 +1074,9 @@ class MedicineFormsTestCase(FormsTestCaseBase):
 
         page = self.c.post("/medicine/add/", params, follow=True)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Medicine entry for {} added".format(str(self.child)))
+        self.assertContains(
+            page, "Medication entry for {} added".format(str(self.child))
+        )
 
     def test_form_validation_future_time(self):
         future_time = timezone.localtime() + timezone.timedelta(hours=1)

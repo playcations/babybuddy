@@ -3,22 +3,18 @@
 {% block title %}
     {% if object %}
         {{ object }}
-    {% elif repeat_mode %}
-        {% trans "Repeat Last Medicine" %}
     {% else %}
-        {% trans "Add a Medicine Entry" %}
+        {% trans "Add a Medication Entry" %}
     {% endif %}
 {% endblock %}
 {% block breadcrumbs %}
     <li class="breadcrumb-item">
-        <a href="{% url 'core:medicine-list' %}">{% trans "Medicine" %}</a>
+        <a href="{% url 'core:medicine-list' %}">{% trans "Medication" %}</a>
     </li>
     {% if object %}
         <li class="breadcrumb-item active" aria-current="page">{% trans "Update" %}</li>
-    {% elif repeat_mode %}
-        <li class="breadcrumb-item active" aria-current="page">{% trans "Repeat Last Medicine" %}</li>
     {% else %}
-        <li class="breadcrumb-item active" aria-current="page">{% trans "Add a Medicine Entry" %}</li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Add a Medication Entry" %}</li>
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -26,13 +22,8 @@
         <h1>
             {% trans "Update" %} <span class="text-info">{{ object }}</span>
         </h1>
-    {% elif repeat_mode %}
-        <h1>{% trans "Repeat Last Medicine" %}</h1>
-        <div class="alert alert-info">
-            {% trans "Form has been pre-filled with the last medicine data. Please verify and adjust as needed." %}
-        </div>
     {% else %}
-        <h1>{% trans "Add a Medicine Entry" %}</h1>
+        <h1>{% trans "Add a Medication Entry" %}</h1>
     {% endif %}
     {% include 'babybuddy/form.html' %}
 {% endblock %}

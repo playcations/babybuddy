@@ -84,6 +84,14 @@ class MedicineViewSet(viewsets.ModelViewSet):
     ordering_fields = ("time", "name", "dosage")
     ordering = "-time"
 
+    def get_view_name(self):
+        # Use model's verbose_name for consistency with user-facing strings
+        name = self.queryset.model._meta.verbose_name
+        suffix = getattr(self, "suffix", None)
+        if suffix:
+            name = f"{name} {suffix}"
+        return name
+
 
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = models.Note.objects.all()
